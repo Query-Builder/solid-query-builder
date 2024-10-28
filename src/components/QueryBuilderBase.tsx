@@ -1,5 +1,3 @@
-import type { Component } from 'solid-js';
-
-export const QueryBuilderBase: Component<{}> = () => {
+export const QueryBuilderBase = () => {
   return <div>Query Builder</div>;
 };
