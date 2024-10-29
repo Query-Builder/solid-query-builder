@@ -1,6 +1,17 @@
-type Action = {
-  type: 'add-rule' | 'add-rule-group';
-  payload: unknown;
+import { Path } from './base';
+
+type Add_Rule = {
+  type: 'add-rule';
+  payload: {
+    path: Path;
+  };
 };
 
-export type QueryBuilderActions = Action;
+type Add_Rule_Group = {
+  type: 'add-rule-group';
+  payload: {
+    path: Path;
+  };
+};
+
+export type QueryBuilderActions = Add_Rule | Add_Rule_Group;

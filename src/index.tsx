@@ -2,6 +2,8 @@ import { QueryBuilderBase } from './components';
 import { QueryBuilderProvider } from './context/QueryBuilderContext';
 import { Query } from './types';
 
+import './styles.css';
+
 // all types
 export * from './types';
 

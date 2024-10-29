@@ -1,11 +1,14 @@
 import { createContext, useContext, type JSX } from 'solid-js';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useReducer } from 'src/hooks';
 import { queryBuilderReducer } from 'src/reducer';
 
 import { Query, QueryBuilderActions } from 'src/types';
 
-const QueryBuilderContext = createContext();
+type QueryBuilderContext = [store: Query, dispatch: (action: QueryBuilderActions) => void];
+
+const QueryBuilderContext = createContext<QueryBuilderContext>();
 
 type QueryBuilderProviderProps = {
   initialQuery?: Query;
@@ -15,7 +18,7 @@ type QueryBuilderProviderProps = {
 const getInitialQuery = (initialQuery?: Query): Query => {
   if (!initialQuery) {
     return {
-      id: `${Date.now()}`,
+      id: uuidv4(),
       combinator: 'AND',
       rules: [],
     };
@@ -30,12 +33,17 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
   );
 
   return (
-    <QueryBuilderContext.Provider value={{ store, dispatch }}>
+    <QueryBuilderContext.Provider value={[store, dispatch]}>
       {props.children}
     </QueryBuilderContext.Provider>
   );
 };
 
 export const useQueryBuilderContext = () => {
-  return useContext(QueryBuilderContext);
+  const context = useContext(QueryBuilderContext);
+  if (!context) {
+    throw new Error('useQueryBuilderContext must be used within QueryBuilderContext');
+  }
+
+  return context;
 };

@@ -11,7 +11,7 @@ const App: Component = () => {
   return (
     <div class={styles.App}>
       <h1>SolidJS based Query Builder Demo</h1>
-      <section>
+      <section class='query-builder__section'>
         <QueryBuilder intialQuery={MOCK_QUERY_DATA}/>
       </section>
     </div>

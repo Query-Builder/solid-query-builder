@@ -1,3 +1,3 @@
-import { RuleGroup } from './rule-group';
+import { RuleGroupType } from './rule-group';
 
-export type Query = RuleGroup;
+export type Query = RuleGroupType;
