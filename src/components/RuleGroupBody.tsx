@@ -8,6 +8,7 @@ import type { Path, RuleGroupType, RuleType } from 'src/types';
 type RuleGroupBodyProps = {
   path: Path;
   query: RuleGroupType;
+  parentLocked: boolean;
 };
 
 export const RuleGroupBody = (props: RuleGroupBodyProps) => {
@@ -20,10 +21,20 @@ export const RuleGroupBody = (props: RuleGroupBodyProps) => {
             <>
               <Show
                 when={'rules' in rule}
-                fallback={<Rule rule={rule as RuleType} path={thisPath()} />}
+                fallback={
+                  <Rule
+                    rule={rule as RuleType}
+                    path={thisPath()}
+                    parentLocked={props.query.locked}
+                  />
+                }
                 keyed
               >
-                <RuleGroup path={thisPath()} query={rule as RuleGroupType} />
+                <RuleGroup
+                  path={thisPath()}
+                  query={rule as RuleGroupType}
+                  parentLocked={props.query.locked}
+                />
               </Show>
             </>
           );

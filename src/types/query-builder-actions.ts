@@ -35,6 +35,19 @@ type Delete_Rule_Group = {
   };
 };
 
-type RuleGroupActions = Add_Rule | Add_Rule_Group | Clone_Rule_Group | Ungroup_Rule_Group | Delete_Rule_Group;
+type Lock_Rule_Group = {
+  type: 'lock-rule-group';
+  payload: {
+    path: Path;
+  };
+};
+
+type RuleGroupActions =
+  | Add_Rule
+  | Add_Rule_Group
+  | Clone_Rule_Group
+  | Ungroup_Rule_Group
+  | Delete_Rule_Group
+  | Lock_Rule_Group;
 
 export type QueryBuilderActions = RuleGroupActions;

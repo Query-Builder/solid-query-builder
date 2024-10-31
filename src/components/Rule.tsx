@@ -3,6 +3,7 @@ import type { Path, RuleType } from 'src/types';
 type RuleProps = {
   path: Path;
   rule: RuleType;
+  parentLocked: boolean;
 };
 
 export const Rule = (props: RuleProps) => {

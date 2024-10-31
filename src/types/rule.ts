@@ -1,6 +1,6 @@
 export type RuleType = {
-  id: string;
-  field: string;
-  fieldValue: string;
-  operator: string;
+  id: string | null;
+  field: string | null;
+  fieldValue: string | null;
+  operator: string | null;
 };
