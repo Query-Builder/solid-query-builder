@@ -12,7 +12,7 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
   const [, dispatch] = useQueryBuilderContext();
 
   return (
-    <div class="rule-group__header">
+    <div class={['rule-group__header', props.query.locked ? 'rule-group__header-disabled' : ''].join('')}>
       <button
         disabled={props.query.locked}
         onClick={() => dispatch({ type: 'add-rule', payload: { path: props.path } })}

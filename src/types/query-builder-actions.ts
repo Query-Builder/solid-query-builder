@@ -1,4 +1,4 @@
-import { Path } from './base';
+import { type Path } from './base';
 
 type Add_Rule = {
   type: 'add-rule';
@@ -50,4 +50,20 @@ type RuleGroupActions =
   | Delete_Rule_Group
   | Lock_Rule_Group;
 
-export type QueryBuilderActions = RuleGroupActions;
+type Lock_Rule = {
+  type: 'lock-rule';
+  payload: {
+    path: Path;
+  };
+};
+
+type Delete_Rule = {
+  type: 'delete-rule';
+  payload: {
+    path: Path;
+  };
+};
+
+type RuleActions = Lock_Rule | Delete_Rule;
+
+export type QueryBuilderActions = RuleGroupActions | RuleActions;

@@ -13,7 +13,9 @@ type RuleGroupBodyProps = {
 
 export const RuleGroupBody = (props: RuleGroupBodyProps) => {
   return (
-    <div class="rule-group__body">
+    <div
+      class={['rule-group__body', props.query.locked ? 'rule-group__body-disabled' : ''].join('')}
+    >
       <For each={props.query.rules}>
         {(rule, index) => {
           const thisPath = () => [...props.path, index()];

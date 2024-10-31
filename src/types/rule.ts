@@ -3,4 +3,5 @@ export type RuleType = {
   field: string | null;
   fieldValue: string | null;
   operator: string | null;
+  locked: boolean;
 };

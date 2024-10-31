@@ -35,4 +35,5 @@ export const getDefaultRule = (): RuleType => ({
   field: 'field-A',
   operator: 'operator-A',
   fieldValue: 'field-value-A',
+  locked: false,
 });
