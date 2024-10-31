@@ -27,7 +27,7 @@ export const RuleGroupBody = (props: RuleGroupBodyProps) => {
                   <Rule
                     rule={rule as RuleType}
                     path={thisPath()}
-                    parentLocked={props.query.locked}
+                    parentLocked={Boolean(props.query.locked)}
                   />
                 }
                 keyed
@@ -35,7 +35,7 @@ export const RuleGroupBody = (props: RuleGroupBodyProps) => {
                 <RuleGroup
                   path={thisPath()}
                   query={rule as RuleGroupType}
-                  parentLocked={props.query.locked}
+                  parentLocked={Boolean(props.query.locked)}
                 />
               </Show>
             </>

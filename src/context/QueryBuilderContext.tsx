@@ -3,13 +3,10 @@ import { createContext, useContext, type JSX } from 'solid-js';
 import { useReducer } from 'src/hooks';
 import { queryBuilderReducer } from 'src/reducer';
 
-import type { Not_Selection, Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
+import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
 import { getDefaultRuleGroup, defaultProps } from 'src/utils';
 
-// TODO: pick this from props??
-type Config = {
-  showNotToggle: Not_Selection;
-};
+type Config = Pick<QueryBuilderConfig, 'showNotToggle' | 'disabled'>;
 
 type QueryBuilderContext = [
   store: Query,
@@ -21,7 +18,7 @@ const QueryBuilderContext = createContext<QueryBuilderContext>();
 
 type QueryBuilderProviderProps = Pick<
   QueryBuilderConfig,
-  'initialQuery' | 'onQueryChangeHandler' | 'showNotToggle'
+  'initialQuery' | 'onQueryChangeHandler' | 'showNotToggle' | 'disabled'
 > & {
   children: JSX.Element;
 };
@@ -35,7 +32,7 @@ const getInitialQuery = (initialQuery?: Query): Query => {
 
 export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
   const mergedProps = defaultProps(
-    { showNotToggle: 'both', initialQuery: getInitialQuery(props.initialQuery) },
+    { showNotToggle: 'both', initialQuery: getInitialQuery(props.initialQuery), disabled: false },
     props,
   );
 
@@ -46,6 +43,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
 
   const config = {
     showNotToggle: mergedProps.showNotToggle,
+    disabled: mergedProps.disabled,
   };
 
   return (

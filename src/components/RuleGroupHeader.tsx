@@ -18,13 +18,13 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       )}
     >
       <button
-        disabled={props.query.locked}
+        disabled={config.disabled || props.query.locked}
         onClick={() => dispatch({ type: 'add-rule', payload: { path: props.path } })}
       >
         Add Rule
       </button>
       <button
-        disabled={props.query.locked}
+        disabled={config.disabled || props.query.locked}
         onClick={() => dispatch({ type: 'add-rule-group', payload: { path: props.path } })}
       >
         Add Group
@@ -35,6 +35,7 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
             type="checkbox"
             name="not-rule-group"
             checked={props.query.not}
+            disabled={config.disabled || props.query.locked}
             onChange={() => dispatch({ type: 'negate-rule-group', payload: { path: props.path } })}
           />
           Not
@@ -42,25 +43,28 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       </Show>
       <Show when={props.path.length > 0}>
         <button
-          disabled={props.query.locked}
+          disabled={config.disabled || props.query.locked}
           onClick={() => dispatch({ type: 'ungroup-rule-group', payload: { path: props.path } })}
         >
           Ungroup
         </button>
         <button
-          disabled={props.query.locked}
+          disabled={config.disabled || props.query.locked}
           onClick={() => dispatch({ type: 'clone-rule-group', payload: { path: props.path } })}
         >
           Clone Group
         </button>
         <button
-          disabled={props.query.locked}
+          disabled={config.disabled || props.query.locked}
           onClick={() => dispatch({ type: 'delete-rule-group', payload: { path: props.path } })}
         >
           Delete Group
         </button>
       </Show>
-      <button onClick={() => dispatch({ type: 'lock-rule-group', payload: { path: props.path } })}>
+      <button
+        disabled={config.disabled}
+        onClick={() => dispatch({ type: 'lock-rule-group', payload: { path: props.path } })}
+      >
         Lock
       </button>
       <span>

@@ -1,3 +1,4 @@
+import { useQueryBuilderContext } from 'src/context';
 import { RuleGroupBody } from './RuleGroupBody';
 import { RuleGroupHeader } from './RuleGroupHeader';
 
@@ -10,6 +11,8 @@ type RuleGroupProps = {
 };
 
 export const RuleGroup = (props: RuleGroupProps) => {
+  const [, , config] = useQueryBuilderContext();
+
   return (
     <div
       title={props.path.length > 0 ? `Rule group at path ${props.path}` : 'Query Builder'}
@@ -18,11 +21,15 @@ export const RuleGroup = (props: RuleGroupProps) => {
       data-rule-group-id={props.query.id}
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
-      aria-disabled={props.query.locked}
+      aria-disabled={config.disabled || props.query.locked}
       data-locked={props.query.locked}
     >
       <RuleGroupHeader path={props.path} query={props.query} />
-      <RuleGroupBody path={props.path} query={props.query} parentLocked={Boolean(props.query.locked)} />
+      <RuleGroupBody
+        path={props.path}
+        query={props.query}
+        parentLocked={Boolean(props.query.locked)}
+      />
     </div>
   );
 };

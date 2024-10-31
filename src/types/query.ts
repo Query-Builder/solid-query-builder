@@ -17,4 +17,6 @@ export type QueryBuilderConfig = {
   onQueryChangeHandler?: (newQuery: Query) => void;
   /** If provided, it will show or hide the not button for the specified level */
   showNotToggle?: Not_Selection;
+  /** If provided, it will disabled the query and disallow user from performing any actions */
+  disabled?: boolean;
 };
