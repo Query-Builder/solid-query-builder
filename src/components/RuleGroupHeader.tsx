@@ -1,4 +1,4 @@
-import { Show } from 'solid-js';
+import { For, Show } from 'solid-js';
 import { useQueryBuilderContext } from 'src/context';
 
 import type { Path, RuleGroupType } from 'src/types';
@@ -17,6 +17,25 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
         '',
       )}
     >
+      <select
+        disabled={config.disabled || props.query.locked}
+        onChange={e =>
+          dispatch({
+            type: 'toggle-combinator',
+            payload: { path: props.path, value: e.currentTarget.value },
+          })
+        }
+      >
+        <For each={config.combinators}>
+          {combinator => {
+            return (
+              <option selected={combinator.value === props.query.combinator}>
+                {combinator.label}
+              </option>
+            );
+          }}
+        </For>
+      </select>
       <button
         disabled={config.disabled || props.query.locked}
         onClick={() => dispatch({ type: 'add-rule', payload: { path: props.path } })}

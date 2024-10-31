@@ -49,6 +49,15 @@ type Negate_Rule_Group = {
   };
 };
 
+type Toggle_Combinator = {
+  type: 'toggle-combinator';
+  payload: {
+    path: Path;
+    // TODO: based on generics????
+    value: string;
+  };
+};
+
 type RuleGroupActions =
   | Add_Rule
   | Add_Rule_Group
@@ -56,7 +65,9 @@ type RuleGroupActions =
   | Ungroup_Rule_Group
   | Delete_Rule_Group
   | Lock_Rule_Group
-  | Negate_Rule_Group;
+  | Negate_Rule_Group
+  | Toggle_Combinator;
+
 type Lock_Rule = {
   type: 'lock-rule';
   payload: {

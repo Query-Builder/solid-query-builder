@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Combinator, Query } from 'src';
+import type { Query } from 'src';
 
 export const MOCK_QUERY_DATA: Query = {
   id: uuidv4(),

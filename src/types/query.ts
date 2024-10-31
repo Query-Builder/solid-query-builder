@@ -1,4 +1,5 @@
 import type { Not_Selection } from './base';
+import { type Combinator } from './combinator';
 import type { RuleGroupType } from './rule-group';
 
 export type Query = RuleGroupType;
@@ -19,4 +20,6 @@ export type QueryBuilderConfig = {
   showNotToggle?: Not_Selection;
   /** If provided, it will disabled the query and disallow user from performing any actions */
   disabled?: boolean;
+  /** If not provided, it would use default combinator of AND and OR */
+  combinators?: Combinator[];
 };

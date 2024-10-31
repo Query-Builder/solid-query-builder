@@ -185,6 +185,16 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       return draftState;
     }
+    case 'toggle-combinator': {
+      const targetPath = action.payload.path;
+      const targetGroup = findRuleGroupByPath(draftState, targetPath);
+
+      if (targetGroup) {
+        targetGroup.combinator = action.payload.value;
+      }
+
+      return draftState;
+    }
     default: {
       return draftState;
     }

@@ -1,4 +1,5 @@
 import { createContext, useContext, type JSX } from 'solid-js';
+import { DEFAULT_COMBINATOR } from 'src/constants';
 
 import { useReducer } from 'src/hooks';
 import { queryBuilderReducer } from 'src/reducer';
@@ -6,7 +7,7 @@ import { queryBuilderReducer } from 'src/reducer';
 import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
 import { getDefaultRuleGroup, defaultProps } from 'src/utils';
 
-type Config = Pick<QueryBuilderConfig, 'showNotToggle' | 'disabled'>;
+type Config = Pick<QueryBuilderConfig, 'showNotToggle' | 'disabled' | 'combinators'>;
 
 type QueryBuilderContext = [
   store: Query,
@@ -18,7 +19,7 @@ const QueryBuilderContext = createContext<QueryBuilderContext>();
 
 type QueryBuilderProviderProps = Pick<
   QueryBuilderConfig,
-  'initialQuery' | 'onQueryChangeHandler' | 'showNotToggle' | 'disabled'
+  'initialQuery' | 'onQueryChangeHandler' | 'showNotToggle' | 'disabled' | 'combinators'
 > & {
   children: JSX.Element;
 };
@@ -32,7 +33,12 @@ const getInitialQuery = (initialQuery?: Query): Query => {
 
 export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
   const mergedProps = defaultProps(
-    { showNotToggle: 'both', initialQuery: getInitialQuery(props.initialQuery), disabled: false },
+    {
+      showNotToggle: 'both',
+      initialQuery: getInitialQuery(props.initialQuery),
+      disabled: false,
+      combinators: DEFAULT_COMBINATOR,
+    },
     props,
   );
 
@@ -41,9 +47,10 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
     mergedProps.initialQuery,
   );
 
-  const config = {
+  const config: Config = {
     showNotToggle: mergedProps.showNotToggle,
     disabled: mergedProps.disabled,
+    combinators: mergedProps.combinators,
   };
 
   return (
