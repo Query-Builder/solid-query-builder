@@ -15,11 +15,15 @@ export const RuleGroupBody = (props: RuleGroupBodyProps) => {
     <div class="rule-group__body">
       <For each={props.query.rules}>
         {(rule, index) => {
-          const thisPath = [...props.path, index()];
+          const thisPath = () => [...props.path, index()];
           return (
             <>
-              <Show when={'rules' in rule} fallback={<Rule rule={rule as RuleType} path={thisPath} />}>
-                <RuleGroup path={thisPath} query={rule as RuleGroupType} />
+              <Show
+                when={'rules' in rule}
+                fallback={<Rule rule={rule as RuleType} path={thisPath()} />}
+                keyed
+              >
+                <RuleGroup path={thisPath()} query={rule as RuleGroupType} />
               </Show>
             </>
           );

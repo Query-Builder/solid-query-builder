@@ -14,7 +14,7 @@ export const Rule = (props: RuleProps) => {
       data-path={JSON.stringify(props.path)}
       data-rule-id={props.rule.id}
     >
-      Rule: {JSON.stringify(props.rule)}
+      Rule: {props.path} ==== {JSON.stringify(props.rule)}
     </div>
   );
 };

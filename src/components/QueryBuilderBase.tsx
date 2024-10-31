@@ -3,10 +3,10 @@ import { useQueryBuilderContext } from 'src/context/QueryBuilderContext';
 import { RuleGroup } from './RuleGroup';
 
 export const QueryBuilderBase = () => {
-  const [query] = useQueryBuilderContext();
+  const [store] = useQueryBuilderContext();
   return (
     <div class="query-builder">
-      <RuleGroup path={[]} query={query}/>
+      <RuleGroup path={[]} query={store}/>
     </div>
   );
 };
