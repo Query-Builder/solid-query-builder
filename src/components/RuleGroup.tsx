@@ -22,7 +22,7 @@ export const RuleGroup = (props: RuleGroupProps) => {
       data-locked={props.query.locked}
     >
       <RuleGroupHeader path={props.path} query={props.query} />
-      <RuleGroupBody path={props.path} query={props.query} parentLocked={props.query.locked} />
+      <RuleGroupBody path={props.path} query={props.query} parentLocked={Boolean(props.query.locked)} />
     </div>
   );
 };

@@ -68,17 +68,21 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
     case 'add-rule': {
       const parentGroupPath = action.payload.path;
       const parentGroup = findRuleGroupByPath(draftState, parentGroupPath);
+
       if (parentGroup) {
         parentGroup.rules.push(getDefaultRule());
       }
+
       return draftState;
     }
     case 'add-rule-group': {
       const parentGroupPath = action.payload.path;
       const parentGroup = findRuleGroupByPath(draftState, parentGroupPath);
+
       if (parentGroup) {
         parentGroup.rules.push(getDefaultRuleGroup());
       }
+
       return draftState;
     }
     case 'clone-rule-group': {
@@ -108,6 +112,7 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
       if (parentRuleGroup && targetIndex >= 0 && targetIndex < parentRuleGroup.rules.length) {
         parentRuleGroup.rules.splice(targetIndex, 1);
       }
+
       return draftState;
     }
     case 'ungroup-rule-group': {
@@ -131,17 +136,21 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
     case 'lock-rule-group': {
       const targetPath = action.payload.path;
       const targetGroup = findRuleGroupByPath(draftState, targetPath);
+
       if (targetGroup) {
         targetGroup.locked = !targetGroup.locked;
       }
+
       return draftState;
     }
     case 'lock-rule': {
       const targetPath = action.payload.path;
       const targetRule = findRuleByPath(draftState, targetPath);
+
       if (targetRule) {
         targetRule.locked = !targetRule.locked;
       }
+
       return draftState;
     }
     case 'delete-rule': {
@@ -152,6 +161,26 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       if (parentRuleGroup && targetIndex >= 0 && targetIndex < parentRuleGroup.rules.length) {
         parentRuleGroup.rules.splice(targetIndex, 1);
+      }
+
+      return draftState;
+    }
+    case 'negate-rule-group': {
+      const targetPath = action.payload.path;
+      const targetGroup = findRuleGroupByPath(draftState, targetPath);
+
+      if (targetGroup) {
+        targetGroup.not = !targetGroup.not;
+      }
+
+      return draftState;
+    }
+    case 'negate-rule': {
+      const targetPath = action.payload.path;
+      const targetRule = findRuleByPath(draftState, targetPath);
+
+      if (targetRule) {
+        targetRule.not = !targetRule.not;
       }
 
       return draftState;

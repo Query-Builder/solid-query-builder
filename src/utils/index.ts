@@ -1,3 +1,4 @@
+import { type MergeProps, mergeProps } from 'solid-js';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { RuleGroupType, RuleType } from 'src/types';
@@ -26,6 +27,7 @@ export const getDefaultRuleGroup = (): RuleGroupType => ({
   id: uuidv4(),
   combinator: 'AND',
   locked: false,
+  not: false,
   rules: [],
 });
 
@@ -36,4 +38,13 @@ export const getDefaultRule = (): RuleType => ({
   operator: 'operator-A',
   fieldValue: 'field-value-A',
   locked: false,
+  not: false,
 });
+
+export const defaultProps = <T, K extends keyof T>(
+  defaults: Required<Pick<T, K>>,
+  props: T,
+): MergeProps<[Required<Pick<T, K>>, T]> => {
+  const resolvedProps = mergeProps(defaults, props);
+  return resolvedProps;
+};

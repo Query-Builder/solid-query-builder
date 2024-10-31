@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Query } from 'src';
+import type { Combinator, Query } from 'src';
 
 export const MOCK_QUERY_DATA: Query = {
   id: uuidv4(),
-  combinator: 'AND',
+  combinator: 'OR',
   rules: [
     {
       id: uuidv4(),

@@ -42,14 +42,21 @@ type Lock_Rule_Group = {
   };
 };
 
+type Negate_Rule_Group = {
+  type: 'negate-rule-group';
+  payload: {
+    path: Path;
+  };
+};
+
 type RuleGroupActions =
   | Add_Rule
   | Add_Rule_Group
   | Clone_Rule_Group
   | Ungroup_Rule_Group
   | Delete_Rule_Group
-  | Lock_Rule_Group;
-
+  | Lock_Rule_Group
+  | Negate_Rule_Group;
 type Lock_Rule = {
   type: 'lock-rule';
   payload: {
@@ -64,6 +71,13 @@ type Delete_Rule = {
   };
 };
 
-type RuleActions = Lock_Rule | Delete_Rule;
+type Negate_Rule = {
+  type: 'negate-rule';
+  payload: {
+    path: Path;
+  };
+};
+
+type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule;
 
 export type QueryBuilderActions = RuleGroupActions | RuleActions;

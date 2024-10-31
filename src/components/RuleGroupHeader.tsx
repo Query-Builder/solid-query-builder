@@ -9,10 +9,14 @@ type RuleGroupHeaderProps = {
 };
 
 export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
-  const [, dispatch] = useQueryBuilderContext();
+  const [, dispatch, config] = useQueryBuilderContext();
 
   return (
-    <div class={['rule-group__header', props.query.locked ? 'rule-group__header-disabled' : ''].join('')}>
+    <div
+      class={['rule-group__header', props.query.locked ? 'rule-group__header-disabled' : ''].join(
+        '',
+      )}
+    >
       <button
         disabled={props.query.locked}
         onClick={() => dispatch({ type: 'add-rule', payload: { path: props.path } })}
@@ -25,6 +29,17 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       >
         Add Group
       </button>
+      <Show when={config.showNotToggle === 'both' || config.showNotToggle === 'rule_group'}>
+        <label>
+          <input
+            type="checkbox"
+            name="not-rule-group"
+            checked={props.query.not}
+            onChange={() => dispatch({ type: 'negate-rule-group', payload: { path: props.path } })}
+          />
+          Not
+        </label>
+      </Show>
       <Show when={props.path.length > 0}>
         <button
           disabled={props.query.locked}
