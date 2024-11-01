@@ -1,5 +1,12 @@
-import type { Component } from 'solid-js';
+import { useQueryBuilderContext } from 'src/context/QueryBuilderContext';
 
-export const QueryBuilderBase: Component<{}> = () => {
-  return <div>Query Builder</div>;
+import { RuleGroup } from './RuleGroup';
+
+export const QueryBuilderBase = () => {
+  const [query] = useQueryBuilderContext();
+  return (
+    <div class="query-builder">
+      <RuleGroup path={[]} query={query} parentLocked={query.locked} />
+    </div>
+  );
 };

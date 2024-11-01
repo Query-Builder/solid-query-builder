@@ -1,0 +1,10 @@
+.query-builder {
+  min-width: 400px;
+  border-radius: 0.25rem;
+}
+
+.rule-group {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #333;
+}

@@ -23,6 +23,10 @@
     "@typescript-eslint/no-unnecessary-type-assertion": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "@typescript-eslint/no-useless-empty-export": "warn",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { "fixStyle": "inline-type-imports" }
+    ],
     "no-only-tests/no-only-tests": "warn",
     "eslint-comments/no-unused-disable": "warn"
   }
