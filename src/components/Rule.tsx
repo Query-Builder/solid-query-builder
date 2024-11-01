@@ -2,11 +2,14 @@ import { Show } from 'solid-js';
 import { useQueryBuilderContext } from 'src/context';
 
 import type { Path, RuleType } from 'src/types';
+import { ShiftActions } from './ShiftActions';
 
 type RuleProps = {
   path: Path;
   rule: RuleType;
   parentLocked: boolean;
+  shiftUpDisabled: boolean;
+  shiftDownDisabled: boolean;
 };
 
 export const Rule = (props: RuleProps) => {
@@ -22,6 +25,13 @@ export const Rule = (props: RuleProps) => {
       aria-disabled={config.disabled || props.parentLocked || props.rule.locked}
       data-disabled={config.disabled || props.parentLocked || props.rule.locked}
     >
+      {config.showShiftActions ? (
+        <ShiftActions
+          path={props.path}
+          shiftUpDisabled={props.shiftUpDisabled}
+          shiftDownDisabled={props.shiftDownDisabled}
+        />
+      ) : null}
       Rule: {props.path} ==== {JSON.stringify(props.rule)}
       <Show when={config.showNotToggle === 'both' || config.showNotToggle === 'rule'}>
         <label>

@@ -22,4 +22,6 @@ export type QueryBuilderConfig = {
   disabled?: boolean;
   /** If not provided, it would use default combinator of AND and OR */
   combinators?: Combinator[];
+  /** If provided, it will show the shift actions with ability to move the rules or rule groups up or down  */
+  showShiftActions?: boolean;
 };

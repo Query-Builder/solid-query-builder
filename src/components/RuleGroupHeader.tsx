@@ -2,10 +2,13 @@ import { For, Show } from 'solid-js';
 import { useQueryBuilderContext } from 'src/context';
 
 import type { Path, RuleGroupType } from 'src/types';
+import { ShiftActions } from './ShiftActions';
 
 type RuleGroupHeaderProps = {
   path: Path;
   query: RuleGroupType;
+  shiftUpDisabled: boolean;
+  shiftDownDisabled: boolean;
 };
 
 export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
@@ -17,6 +20,13 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
         '',
       )}
     >
+      {config.showShiftActions && props.path.length > 0 ? (
+        <ShiftActions
+          path={props.path}
+          shiftUpDisabled={props.shiftUpDisabled}
+          shiftDownDisabled={props.shiftDownDisabled}
+        />
+      ) : null}
       <select
         disabled={config.disabled || props.query.locked}
         onChange={e =>

@@ -1,7 +1,7 @@
 import { type MergeProps, mergeProps } from 'solid-js';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { RuleGroupType, RuleType } from 'src/types';
+import type { Path, RuleGroupType, RuleType } from 'src/types';
 
 export const cloneRuleGroupWithUpdatedIds = (targetRuleGroup: RuleGroupType) => {
   let clonedRuleGroup = { ...targetRuleGroup, id: uuidv4() };
@@ -47,4 +47,8 @@ export const defaultProps = <T, K extends keyof T>(
 ): MergeProps<[Required<Pick<T, K>>, T]> => {
   const resolvedProps = mergeProps(defaults, props);
   return resolvedProps;
+};
+
+export const arePathsEqual = (path1: Path, path2: Path): boolean => {
+  return path1.length === path2.length && path1.every((value, index) => value === path2[index]);
 };

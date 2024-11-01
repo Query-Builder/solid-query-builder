@@ -8,3 +8,32 @@
   border-radius: 0.25rem;
   border: 1px solid #333;
 }
+
+.rule {
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+}
+
+.rule-group__header {
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+  align-items: center;
+}
+
+.shift-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.shift-actions > button {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+}

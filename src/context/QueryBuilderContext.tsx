@@ -7,7 +7,10 @@ import { queryBuilderReducer } from 'src/reducer';
 import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
 import { getDefaultRuleGroup, defaultProps } from 'src/utils';
 
-type Config = Pick<QueryBuilderConfig, 'showNotToggle' | 'disabled' | 'combinators'>;
+type Config = Pick<
+  QueryBuilderConfig,
+  'showNotToggle' | 'disabled' | 'combinators' | 'showShiftActions'
+>;
 
 type QueryBuilderContext = [
   store: Query,
@@ -19,7 +22,12 @@ const QueryBuilderContext = createContext<QueryBuilderContext>();
 
 type QueryBuilderProviderProps = Pick<
   QueryBuilderConfig,
-  'initialQuery' | 'onQueryChangeHandler' | 'showNotToggle' | 'disabled' | 'combinators'
+  | 'initialQuery'
+  | 'onQueryChangeHandler'
+  | 'showNotToggle'
+  | 'disabled'
+  | 'combinators'
+  | 'showShiftActions'
 > & {
   children: JSX.Element;
 };
@@ -38,6 +46,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       initialQuery: getInitialQuery(props.initialQuery),
       disabled: false,
       combinators: DEFAULT_COMBINATOR,
+      showShiftActions: false,
     },
     props,
   );
@@ -51,6 +60,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
     showNotToggle: mergedProps.showNotToggle,
     disabled: mergedProps.disabled,
     combinators: mergedProps.combinators,
+    showShiftActions: mergedProps.showShiftActions,
   };
 
   return (

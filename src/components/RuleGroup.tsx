@@ -8,6 +8,8 @@ type RuleGroupProps = {
   path: Path;
   query: RuleGroupType;
   parentLocked: boolean;
+  shiftUpDisabled: boolean;
+  shiftDownDisabled: boolean;
 };
 
 export const RuleGroup = (props: RuleGroupProps) => {
@@ -24,7 +26,12 @@ export const RuleGroup = (props: RuleGroupProps) => {
       aria-disabled={config.disabled || props.query.locked}
       data-locked={props.query.locked}
     >
-      <RuleGroupHeader path={props.path} query={props.query} />
+      <RuleGroupHeader
+        path={props.path}
+        query={props.query}
+        shiftUpDisabled={props.shiftUpDisabled}
+        shiftDownDisabled={props.shiftDownDisabled}
+      />
       <RuleGroupBody
         path={props.path}
         query={props.query}

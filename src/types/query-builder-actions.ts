@@ -58,16 +58,6 @@ type Toggle_Combinator = {
   };
 };
 
-type RuleGroupActions =
-  | Add_Rule
-  | Add_Rule_Group
-  | Clone_Rule_Group
-  | Ungroup_Rule_Group
-  | Delete_Rule_Group
-  | Lock_Rule_Group
-  | Negate_Rule_Group
-  | Toggle_Combinator;
-
 type Lock_Rule = {
   type: 'lock-rule';
   payload: {
@@ -89,6 +79,32 @@ type Negate_Rule = {
   };
 };
 
+type Shift_Up = {
+  type: 'shift-up';
+  payload: {
+    path: Path;
+  };
+};
+
+type Shift_Down = {
+  type: 'shift-down';
+  payload: {
+    path: Path;
+  };
+};
+
+type RuleGroupActions =
+  | Add_Rule
+  | Add_Rule_Group
+  | Clone_Rule_Group
+  | Ungroup_Rule_Group
+  | Delete_Rule_Group
+  | Lock_Rule_Group
+  | Negate_Rule_Group
+  | Toggle_Combinator;
+
 type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule;
 
-export type QueryBuilderActions = RuleGroupActions | RuleActions;
+type CommonActions = Shift_Up | Shift_Down;
+
+export type QueryBuilderActions = RuleGroupActions | RuleActions | CommonActions;
