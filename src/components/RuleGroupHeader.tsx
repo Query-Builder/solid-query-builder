@@ -17,7 +17,7 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
   return (
     <div
       class={['rule-group__header', props.query.locked ? 'rule-group__header-disabled' : ''].join(
-        '',
+        ' ',
       )}
     >
       {config.showShiftActions && props.path.length > 0 ? (

@@ -3,6 +3,13 @@ import { useQueryBuilderContext } from 'src/context';
 
 import type { Path, RuleType } from 'src/types';
 import { ShiftActions } from './ShiftActions';
+import { DragHandle } from './DragHandle';
+import {
+  createDraggable,
+  createDroppable,
+  transformStyle,
+  useDragDropContext,
+} from '@thisbeyond/solid-dnd';
 
 type RuleProps = {
   path: Path;
@@ -12,13 +19,50 @@ type RuleProps = {
   shiftDownDisabled: boolean;
 };
 
+type RefSetter<V> = (value: V) => void;
+
+const combineRefs = <V,>(setRefA: RefSetter<V>, setRefB: RefSetter<V>): RefSetter<V> => {
+  return ref => {
+    setRefA(ref);
+    setRefB(ref);
+  };
+};
+
 export const Rule = (props: RuleProps) => {
+  const draggable = createDraggable(props.rule.id, { rule: props.rule, path: props.path });
+  const droppable = createDroppable(props.rule.id);
+  const combinedRef = combineRefs(draggable.ref, droppable.ref);
+
   const [, dispatch, config] = useQueryBuilderContext();
+
+  // TODO: move this to a different hook
+  const [state] = useDragDropContext()!;
+
+  const activeClass = () => {
+    if (droppable.isActiveDroppable) {
+      if (state.active.draggable?.data.rule.id === props.rule.id) {
+        return 'droppable-reject';
+      } else {
+        return 'droppable-accept';
+      }
+    }
+    return '';
+  };
 
   return (
     <div
+      tabIndex={0}
+      ref={combinedRef}
+      style={transformStyle(draggable.transform)}
       data-testid="rule"
-      class={['rule', props.rule.locked ? 'rule-disabled' : ''].join(' ')}
+      class={[
+        'rule',
+        'draggable-container',
+        activeClass(),
+        props.rule.locked ? 'rule-disabled' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
       data-rule-id={props.rule.id}
@@ -32,6 +76,7 @@ export const Rule = (props: RuleProps) => {
           shiftDownDisabled={props.shiftDownDisabled}
         />
       ) : null}
+      {config.allowDragAndDrop ? <DragHandle dragActivators={draggable.dragActivators} /> : null}
       Rule: {props.path} ==== {JSON.stringify(props.rule)}
       <Show when={config.showNotToggle === 'both' || config.showNotToggle === 'rule'}>
         <label>

@@ -15,7 +15,9 @@ type RuleGroupBodyProps = {
 export const RuleGroupBody = (props: RuleGroupBodyProps) => {
   return (
     <div
-      class={['rule-group__body', props.query.locked ? 'rule-group__body-disabled' : ''].join('')}
+      class={['rule-group__body', props.query.locked ? 'rule-group__body-disabled' : '']
+        .filter(Boolean)
+        .join(' ')}
     >
       <For each={props.query.rules}>
         {(rule, index) => {

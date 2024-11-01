@@ -12,7 +12,7 @@ const App: Component = () => {
     <div class={styles.App}>
       <h1>SolidJS based Query Builder Demo</h1>
       <section class="query-builder__section">
-        <QueryBuilder initialQuery={MOCK_QUERY_DATA} showShiftActions/>
+        <QueryBuilder initialQuery={MOCK_QUERY_DATA} showShiftActions allowDragAndDrop/>
       </section>
     </div>
   );

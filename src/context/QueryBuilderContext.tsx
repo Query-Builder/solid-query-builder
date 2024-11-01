@@ -9,7 +9,7 @@ import { getDefaultRuleGroup, defaultProps } from 'src/utils';
 
 type Config = Pick<
   QueryBuilderConfig,
-  'showNotToggle' | 'disabled' | 'combinators' | 'showShiftActions'
+  'showNotToggle' | 'disabled' | 'combinators' | 'showShiftActions' | 'allowDragAndDrop'
 >;
 
 type QueryBuilderContext = [
@@ -28,6 +28,7 @@ type QueryBuilderProviderProps = Pick<
   | 'disabled'
   | 'combinators'
   | 'showShiftActions'
+  | 'allowDragAndDrop'
 > & {
   children: JSX.Element;
 };
@@ -47,6 +48,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       disabled: false,
       combinators: DEFAULT_COMBINATOR,
       showShiftActions: false,
+      allowDragAndDrop: false,
     },
     props,
   );
@@ -61,6 +63,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
     disabled: mergedProps.disabled,
     combinators: mergedProps.combinators,
     showShiftActions: mergedProps.showShiftActions,
+    allowDragAndDrop: mergedProps.allowDragAndDrop,
   };
 
   return (

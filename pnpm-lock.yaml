@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@thisbeyond/solid-dnd':
+        specifier: ^0.7.5
+        version: 0.7.5(solid-js@1.8.17)
     devDependencies:
       '@types/node':
         specifier: ^20.12.12
@@ -796,6 +800,12 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
+
+  '@thisbeyond/solid-dnd@0.7.5':
+    resolution: {integrity: sha512-DfI5ff+yYGpK9M21LhYwIPlbP2msKxN2ARwuu6GF8tT1GgNVDTI8VCQvH4TJFoVApP9d44izmAcTh/iTCH2UUw==}
+    engines: {node: '>=18.0.0', pnpm: '>=8.6.0'}
+    peerDependencies:
+      solid-js: ^1.5
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -2740,6 +2750,10 @@ snapshots:
     optional: true
 
   '@sinclair/typebox@0.27.8': {}
+
+  '@thisbeyond/solid-dnd@0.7.5(solid-js@1.8.17)':
+    dependencies:
+      solid-js: 1.8.17
 
   '@types/babel__core@7.20.5':
     dependencies:

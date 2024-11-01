@@ -93,5 +93,8 @@
   "engines": {
     "node": ">=18",
     "pnpm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@thisbeyond/solid-dnd": "^0.7.5"
   }
 }

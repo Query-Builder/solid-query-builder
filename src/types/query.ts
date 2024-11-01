@@ -24,4 +24,6 @@ export type QueryBuilderConfig = {
   combinators?: Combinator[];
   /** If provided, it will show the shift actions with ability to move the rules or rule groups up or down  */
   showShiftActions?: boolean;
+  /** If provided, it will allow the drag and drop feature to move the rules or rule groups up or down  */
+  allowDragAndDrop?: boolean;
 };

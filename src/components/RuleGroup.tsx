@@ -17,8 +17,11 @@ export const RuleGroup = (props: RuleGroupProps) => {
 
   return (
     <div
+      tabIndex={0}
       title={props.path.length > 0 ? `Rule group at path ${props.path}` : 'Query Builder'}
-      class={['rule-group', props.query.locked ? 'rule-group-disabled' : ''].join(' ')}
+      class={['rule-group', props.query.locked ? 'rule-group-disabled' : '']
+        .filter(Boolean)
+        .join(' ')}
       data-testid="rule-group"
       data-rule-group-id={props.query.id}
       data-level={props.path.length}

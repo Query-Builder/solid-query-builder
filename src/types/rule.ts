@@ -1,5 +1,5 @@
 export type RuleType = {
-  id: string | null;
+  id: string;
   field: string | null;
   fieldValue: string | null;
   operator: string | null;
