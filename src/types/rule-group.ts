@@ -1,4 +1,4 @@
-import { type Combinator } from './base';
+import { type Combinator } from './combinator';
 import { type RuleType } from './rule';
 
 export type RulesType = (RuleType | RuleGroupType)[];

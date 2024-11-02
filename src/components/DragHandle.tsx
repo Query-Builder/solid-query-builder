@@ -5,7 +5,6 @@ type DragHandleProps = {
 };
 
 export const DragHandle = (props: DragHandleProps) => {
-  console.log(props);
   return (
     <span
       data-testid="drag-handle"
