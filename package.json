@@ -33,19 +33,24 @@
   "types": "./dist/index.d.ts",
   "browser": {},
   "exports": {
-    "solid": {
-      "development": "./dist/dev.jsx",
-      "import": "./dist/index.jsx"
-    },
-    "development": {
+    ".": {
+      "solid": {
+        "development": "./dist/dev.jsx",
+        "import": "./dist/index.jsx"
+      },
+      "development": {
+        "import": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/dev.js"
+        }
+      },
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/dev.js"
+        "default": "./dist/index.js"
       }
     },
-    "import": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+    "./style.css": {
+      "import": "./dist/index.css"
     }
   },
   "typesVersions": {},
@@ -87,7 +92,16 @@
     "vitest": "^1.6.0"
   },
   "keywords": [
-    "solid"
+    "solid",
+    "querybuilder",
+    "query",
+    "builder",
+    "operators",
+    "component",
+    "expression",
+    "andor",
+    "and",
+    "or"
   ],
   "packageManager": "pnpm@9.1.1",
   "engines": {
