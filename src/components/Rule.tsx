@@ -72,8 +72,8 @@ export const Rule = (props: RuleProps) => {
       {config.showShiftActions ? (
         <ShiftActions
           path={props.path}
-          shiftUpDisabled={props.shiftUpDisabled}
-          shiftDownDisabled={props.shiftDownDisabled}
+          shiftUpDisabled={props.parentLocked || props.rule.locked || props.shiftUpDisabled}
+          shiftDownDisabled={props.parentLocked || props.rule.locked || props.shiftDownDisabled}
         />
       ) : null}
       {config.allowDragAndDrop ? <DragHandle dragActivators={draggable.dragActivators} /> : null}

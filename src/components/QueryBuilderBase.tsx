@@ -9,7 +9,7 @@ export const QueryBuilderBase = () => {
       <RuleGroup
         path={[]}
         query={query}
-        parentLocked={Boolean(query.locked)}
+        parentLocked={false}
         shiftUpDisabled={true}
         shiftDownDisabled={true}
       />

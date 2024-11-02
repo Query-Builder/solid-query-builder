@@ -9,6 +9,7 @@ type RuleGroupHeaderProps = {
   query: RuleGroupType;
   shiftUpDisabled: boolean;
   shiftDownDisabled: boolean;
+  parentLocked: boolean;
 };
 
 export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
@@ -23,12 +24,12 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       {config.showShiftActions && props.path.length > 0 ? (
         <ShiftActions
           path={props.path}
-          shiftUpDisabled={props.shiftUpDisabled}
-          shiftDownDisabled={props.shiftDownDisabled}
+          shiftUpDisabled={props.parentLocked || props.query.locked || props.shiftUpDisabled}
+          shiftDownDisabled={props.parentLocked || props.query.locked || props.shiftDownDisabled}
         />
       ) : null}
       <select
-        disabled={config.disabled || props.query.locked}
+        disabled={config.disabled || props.parentLocked || props.query.locked}
         onChange={e =>
           dispatch({
             type: 'toggle-combinator',
@@ -47,13 +48,13 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
         </For>
       </select>
       <button
-        disabled={config.disabled || props.query.locked}
+        disabled={config.disabled || props.parentLocked || props.query.locked}
         onClick={() => dispatch({ type: 'add-rule', payload: { path: props.path } })}
       >
         Add Rule
       </button>
       <button
-        disabled={config.disabled || props.query.locked}
+        disabled={config.disabled || props.parentLocked || props.query.locked}
         onClick={() => dispatch({ type: 'add-rule-group', payload: { path: props.path } })}
       >
         Add Group
@@ -64,7 +65,7 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
             type="checkbox"
             name="not-rule-group"
             checked={props.query.not}
-            disabled={config.disabled || props.query.locked}
+            disabled={config.disabled || props.parentLocked || props.query.locked}
             onChange={() => dispatch({ type: 'negate-rule-group', payload: { path: props.path } })}
           />
           Not
@@ -72,26 +73,26 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       </Show>
       <Show when={props.path.length > 0}>
         <button
-          disabled={config.disabled || props.query.locked}
+          disabled={config.disabled || props.parentLocked || props.query.locked}
           onClick={() => dispatch({ type: 'ungroup-rule-group', payload: { path: props.path } })}
         >
           Ungroup
         </button>
         <button
-          disabled={config.disabled || props.query.locked}
+          disabled={config.disabled || props.parentLocked || props.query.locked}
           onClick={() => dispatch({ type: 'clone-rule-group', payload: { path: props.path } })}
         >
           Clone Group
         </button>
         <button
-          disabled={config.disabled || props.query.locked}
+          disabled={config.disabled || props.parentLocked || props.query.locked}
           onClick={() => dispatch({ type: 'delete-rule-group', payload: { path: props.path } })}
         >
           Delete Group
         </button>
       </Show>
       <button
-        disabled={config.disabled}
+        disabled={config.disabled || props.parentLocked}
         onClick={() => dispatch({ type: 'lock-rule-group', payload: { path: props.path } })}
       >
         Lock

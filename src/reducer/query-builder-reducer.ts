@@ -206,9 +206,12 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
         const aboveItem = parentRuleGroup.rules[targetIndex - 1];
 
         if (currentItem && aboveItem && 'rules' in aboveItem) {
-          // Move temp inside the above rule group as the last rule or group
-          aboveItem.rules.push(currentItem);
-          parentRuleGroup.rules.splice(targetIndex, 1);
+          // Move temp inside the above rule group as the last rule or group only if it's not locked...
+          if (!aboveItem.locked) {
+            aboveItem.rules.push(currentItem);
+            parentRuleGroup.rules.splice(targetIndex, 1);
+          }
+          return draftState;
         } else if (currentItem && aboveItem) {
           // Swap with the above item
           parentRuleGroup.rules[targetIndex] = parentRuleGroup.rules[targetIndex - 1]!;
@@ -239,9 +242,11 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
         const belowItem = parentRuleGroup.rules[targetIndex + 1];
 
         if (currentItem && belowItem && 'rules' in belowItem) {
-          // Move temp inside the below rule group as the first rule or group
-          belowItem.rules.unshift(currentItem);
-          parentRuleGroup.rules.splice(targetIndex, 1);
+          // Move temp inside the below rule group as the first rule or group only if it's not locked...
+          if (!belowItem.locked) {
+            belowItem.rules.unshift(currentItem);
+            parentRuleGroup.rules.splice(targetIndex, 1);
+          }
         } else if (currentItem && belowItem) {
           // Swap with the below item
           parentRuleGroup.rules[targetIndex] = parentRuleGroup.rules[targetIndex + 1]!;

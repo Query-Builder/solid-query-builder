@@ -34,17 +34,16 @@ export const RuleGroupBody = (props: RuleGroupBodyProps) => {
                   <Rule
                     rule={rule as RuleType}
                     path={thisPath()}
-                    parentLocked={Boolean(props.query.locked)}
+                    parentLocked={props.parentLocked || Boolean(props.query.locked)}
                     shiftUpDisabled={shiftUpDisabled()}
                     shiftDownDisabled={shiftDownDisabled()}
                   />
                 }
-                keyed
               >
                 <RuleGroup
                   path={thisPath()}
                   query={rule as RuleGroupType}
-                  parentLocked={Boolean(props.query.locked)}
+                  parentLocked={props.parentLocked || Boolean(props.query.locked)}
                   shiftUpDisabled={shiftUpDisabled()}
                   shiftDownDisabled={shiftDownDisabled()}
                 />

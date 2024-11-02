@@ -30,6 +30,7 @@ export const RuleGroup = (props: RuleGroupProps) => {
       data-locked={props.query.locked}
     >
       <RuleGroupHeader
+        parentLocked={props.parentLocked}
         path={props.path}
         query={props.query}
         shiftUpDisabled={props.shiftUpDisabled}
@@ -38,7 +39,7 @@ export const RuleGroup = (props: RuleGroupProps) => {
       <RuleGroupBody
         path={props.path}
         query={props.query}
-        parentLocked={Boolean(props.query.locked)}
+        parentLocked={props.parentLocked || Boolean(props.query.locked)}
       />
     </div>
   );
