@@ -1,15 +1,16 @@
-import { Show } from 'solid-js';
-import { useQueryBuilderContext } from 'src/context';
+import { createEffect, onCleanup, onMount, Show } from 'solid-js';
+import {
+  createDraggable,
+  createDroppable,
+  DragOverlay,
+  transformStyle,
+  useDragDropContext,
+} from '@thisbeyond/solid-dnd';
+import { useQueryBuilderContext, useQueryBuilderDNDContext } from 'src/context';
 
 import type { Path, RuleType } from 'src/types';
 import { ShiftActions } from './ShiftActions';
 import { DragHandle } from './DragHandle';
-import {
-  createDraggable,
-  createDroppable,
-  transformStyle,
-  useDragDropContext,
-} from '@thisbeyond/solid-dnd';
 
 type RuleProps = {
   path: Path;
@@ -30,23 +31,36 @@ const combineRefs = <V,>(setRefA: RefSetter<V>, setRefB: RefSetter<V>): RefSette
 
 export const Rule = (props: RuleProps) => {
   const draggable = createDraggable(props.rule.id, { rule: props.rule, path: props.path });
-  const droppable = createDroppable(props.rule.id);
+  const droppable = createDroppable(props.rule.id, { rule: props.rule, path: props.path });
   const combinedRef = combineRefs(draggable.ref, droppable.ref);
 
+  const [{ active }] = useDragDropContext()!;
+
   const [, dispatch, config] = useQueryBuilderContext();
+  const { dndConfig, setRuleIdToPathMapping } = useQueryBuilderDNDContext();
 
-  // TODO: move this to a different hook
-  const [state] = useDragDropContext()!;
+  onMount(() => {
+    setRuleIdToPathMapping(mapping => {
+      return { ...mapping, [props.rule.id]: JSON.stringify(props.path) };
+    });
+  });
 
-  const activeClass = () => {
-    if (droppable.isActiveDroppable) {
-      if (state.active.draggable?.data.rule.id === props.rule.id) {
-        return 'droppable-reject';
-      } else {
-        return 'droppable-accept';
-      }
-    }
-    return '';
+  createEffect(() => {
+    setRuleIdToPathMapping(mapping => {
+      return { ...mapping, [props.rule.id]: JSON.stringify(props.path) };
+    });
+  });
+
+  onCleanup(() => {
+    setRuleIdToPathMapping(mapping => {
+      const newMapping = { ...mapping };
+      delete newMapping[props.rule.id];
+      return newMapping;
+    });
+  });
+
+  const checkIfValidDrop = () => {
+    return active.draggable?.id !== active.droppable?.id && active.droppable?.id === props.rule.id;
   };
 
   return (
@@ -58,8 +72,9 @@ export const Rule = (props: RuleProps) => {
       class={[
         'rule',
         'draggable-container',
-        activeClass(),
         props.rule.locked ? 'rule-disabled' : '',
+        dndConfig().dropPosition === 'top' && checkIfValidDrop() ? 'rule-drop-top' : '',
+        dndConfig().dropPosition === 'bottom' && checkIfValidDrop() ? 'rule-drop-bottom' : '',
       ]
         .filter(Boolean)
         .join(' ')}
@@ -69,14 +84,16 @@ export const Rule = (props: RuleProps) => {
       aria-disabled={config().disabled || props.parentLocked || props.rule.locked}
       data-disabled={config().disabled || props.parentLocked || props.rule.locked}
     >
-      {config().showShiftActions ? (
+      <Show when={config().showShiftActions} fallback={null}>
         <ShiftActions
           path={props.path}
           shiftUpDisabled={props.parentLocked || props.rule.locked || props.shiftUpDisabled}
           shiftDownDisabled={props.parentLocked || props.rule.locked || props.shiftDownDisabled}
         />
-      ) : null}
-      {config().allowDragAndDrop ? <DragHandle dragActivators={draggable.dragActivators} /> : null}
+      </Show>
+      <Show when={config().allowDragAndDrop} fallback={null}>
+        <DragHandle dragActivators={draggable.dragActivators} />
+      </Show>
       Rule: {props.path} ==== {JSON.stringify(props.rule.id)}
       <Show when={config().showNotToggle === 'both' || config().showNotToggle === 'rule'}>
         <label>
@@ -106,6 +123,9 @@ export const Rule = (props: RuleProps) => {
       >
         Delete
       </button>
+      <DragOverlay>
+        <div class="drag-overlay">{props.rule.field}</div>
+      </DragOverlay>
     </div>
   );
 };
