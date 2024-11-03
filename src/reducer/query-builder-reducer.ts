@@ -195,6 +195,27 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       return draftState;
     }
+    case 'set-field': {
+      const targetPath = action.payload.path;
+      const targetRule = findRuleByPath(draftState, targetPath);
+
+      if (targetRule) {
+        targetRule.field = action.payload.field.name;
+      }
+
+      return draftState;
+    }
+
+    case 'set-operator': {
+      const targetPath = action.payload.path;
+      const targetRule = findRuleByPath(draftState, targetPath);
+
+      if (targetRule) {
+        targetRule.operator = action.payload.operator.label;
+      }
+
+      return draftState;
+    }
     default: {
       return draftState;
     }

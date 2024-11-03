@@ -7,19 +7,36 @@ import { queryBuilderReducer } from 'src/reducer';
 import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
 import { getDefaultRuleGroup, defaultProps } from 'src/utils';
 
-type Config = Pick<QueryBuilderConfig, 'showNotToggle' | 'disabled' | 'combinators'>;
+type Config = () => Pick<
+  QueryBuilderConfig,
+  | 'showNotToggle'
+  | 'disabled'
+  | 'combinators'
+  | 'fields'
+  | 'operators'
+  | 'getOperators'
+  | 'controlElements'
+>;
 
-type QueryBuilderContext = [
-  store: Query,
-  dispatch: (action: QueryBuilderActions) => void,
-  config: Config,
-];
+type QueryBuilderContext = {
+  store: Query;
+  dispatch: (action: QueryBuilderActions) => void;
+  config: Config;
+};
 
 const QueryBuilderContext = createContext<QueryBuilderContext>();
 
 type QueryBuilderProviderProps = Pick<
   QueryBuilderConfig,
-  'initialQuery' | 'onQueryChangeHandler' | 'showNotToggle' | 'disabled' | 'combinators'
+  | 'initialQuery'
+  | 'onQueryChangeHandler'
+  | 'showNotToggle'
+  | 'disabled'
+  | 'combinators'
+  | 'fields'
+  | 'operators'
+  | 'getOperators'
+  | 'controlElements'
 > & {
   children: JSX.Element;
 };
@@ -38,6 +55,12 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       initialQuery: getInitialQuery(props.initialQuery),
       disabled: false,
       combinators: DEFAULT_COMBINATOR,
+      operators: null,
+      getOperators: () => null,
+      controlElements: {
+        customOperators: () => null,
+        customValueEditor: () => null,
+      },
     },
     props,
   );
@@ -47,14 +70,24 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
     mergedProps.initialQuery,
   );
 
-  const config: Config = {
+  const config: Config = () => ({
     showNotToggle: mergedProps.showNotToggle,
     disabled: mergedProps.disabled,
     combinators: mergedProps.combinators,
-  };
+    operators: mergedProps.operators,
+    getOperators: mergedProps.getOperators,
+    controlElements: mergedProps.controlElements,
+    fields: props.fields,
+  });
 
   return (
-    <QueryBuilderContext.Provider value={[store, dispatch, config]}>
+    <QueryBuilderContext.Provider
+      value={{
+        store,
+        dispatch,
+        config,
+      }}
+    >
       {props.children}
     </QueryBuilderContext.Provider>
   );

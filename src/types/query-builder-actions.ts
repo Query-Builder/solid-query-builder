@@ -1,4 +1,7 @@
-import { type Path } from './base';
+import type { Path } from './base';
+import type { Fields } from './fields';
+import type { Operators } from './operators';
+import type { FieldsValue } from './fieldsValue';
 
 type Add_Rule = {
   type: 'add-rule';
@@ -58,6 +61,30 @@ type Toggle_Combinator = {
   };
 };
 
+type Change_Field = {
+  type: 'set-field';
+  payload: {
+    path: Path;
+    field: Fields;
+  };
+};
+
+type Change_Operator = {
+  type: 'set-operator';
+  payload: {
+    path: Path;
+    operator: Operators;
+  };
+};
+
+type Change_Field_Value = {
+  type: 'set-fieldValue';
+  payload: {
+    path: Path;
+    fieldValue: FieldsValue;
+  };
+};
+
 type RuleGroupActions =
   | Add_Rule
   | Add_Rule_Group
@@ -89,6 +116,12 @@ type Negate_Rule = {
   };
 };
 
-type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule;
+type RuleActions =
+  | Lock_Rule
+  | Delete_Rule
+  | Negate_Rule
+  | Change_Field
+  | Change_Operator
+  | Change_Field_Value;
 
 export type QueryBuilderActions = RuleGroupActions | RuleActions;

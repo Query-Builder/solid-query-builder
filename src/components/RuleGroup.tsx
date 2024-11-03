@@ -7,11 +7,11 @@ import type { Path, RuleGroupType } from 'src/types';
 type RuleGroupProps = {
   path: Path;
   query: RuleGroupType;
-  parentLocked: boolean;
+  parentLocked: boolean | undefined;
 };
 
 export const RuleGroup = (props: RuleGroupProps) => {
-  const [, , config] = useQueryBuilderContext();
+  const { config } = useQueryBuilderContext();
 
   return (
     <div
@@ -21,7 +21,7 @@ export const RuleGroup = (props: RuleGroupProps) => {
       data-rule-group-id={props.query.id}
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
-      aria-disabled={config.disabled || props.query.locked}
+      aria-disabled={config().disabled || props.query.locked}
       data-locked={props.query.locked}
     >
       <RuleGroupHeader path={props.path} query={props.query} />

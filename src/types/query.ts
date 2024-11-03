@@ -1,6 +1,9 @@
 import type { Not_Selection } from './base';
-import { type Combinator } from './combinator';
+import type { Combinator } from './combinator';
 import type { RuleGroupType } from './rule-group';
+import type { Fields } from './fields';
+import type { OperatorsList } from './operators';
+import type { JSX } from 'solid-js/jsx-runtime';
 
 export type Query = RuleGroupType;
 
@@ -22,4 +25,15 @@ export type QueryBuilderConfig = {
   disabled?: boolean;
   /** If not provided, it would use default combinator of AND and OR */
   combinators?: Combinator[];
+  /** Required used to select fields for each rows */
+  fields: Fields[];
+  /** if provided all the rules will use this operator */
+  operators?: OperatorsList | null;
+  /** if provided will return the operators based on the datatype field from FieldsList */
+  getOperators?: (field: string, misc: { fieldsData: Fields }) => OperatorsList | null;
+  /** if provided will override the default components */
+  controlElements?: {
+    customOperators?: () => JSX.Element;
+    customValueEditor?: () => JSX.Element;
+  };
 };

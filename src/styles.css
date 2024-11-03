@@ -8,3 +8,11 @@
   border-radius: 0.25rem;
   border: 1px solid #333;
 }
+
+.rule {
+  display: flex;
+  align-items: center;
+  border: 1px solid #333;
+  padding: 10px;
+  margin: 5px;
+}
