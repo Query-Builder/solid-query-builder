@@ -66,25 +66,25 @@ export const Rule = (props: RuleProps) => {
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
       data-rule-id={props.rule.id}
-      aria-disabled={config.disabled || props.parentLocked || props.rule.locked}
-      data-disabled={config.disabled || props.parentLocked || props.rule.locked}
+      aria-disabled={config().disabled || props.parentLocked || props.rule.locked}
+      data-disabled={config().disabled || props.parentLocked || props.rule.locked}
     >
-      {config.showShiftActions ? (
+      {config().showShiftActions ? (
         <ShiftActions
           path={props.path}
           shiftUpDisabled={props.parentLocked || props.rule.locked || props.shiftUpDisabled}
           shiftDownDisabled={props.parentLocked || props.rule.locked || props.shiftDownDisabled}
         />
       ) : null}
-      {config.allowDragAndDrop ? <DragHandle dragActivators={draggable.dragActivators} /> : null}
-      Rule: {props.path} ==== {JSON.stringify(props.rule)}
-      <Show when={config.showNotToggle === 'both' || config.showNotToggle === 'rule'}>
+      {config().allowDragAndDrop ? <DragHandle dragActivators={draggable.dragActivators} /> : null}
+      Rule: {props.path} ==== {JSON.stringify(props.rule.id)}
+      <Show when={config().showNotToggle === 'both' || config().showNotToggle === 'rule'}>
         <label>
           <input
             type="checkbox"
             name="not-rule-group"
             checked={props.rule.not}
-            disabled={config.disabled || props.parentLocked || props.rule.locked}
+            disabled={config().disabled || props.parentLocked || props.rule.locked}
             onChange={() => dispatch({ type: 'negate-rule', payload: { path: props.path } })}
           />
           Not
@@ -93,7 +93,7 @@ export const Rule = (props: RuleProps) => {
       <button
         data-testid="lock-rule-button"
         class="lock-button"
-        disabled={config.disabled || props.parentLocked}
+        disabled={config().disabled || props.parentLocked}
         onClick={() => dispatch({ type: 'lock-rule', payload: { path: props.path } })}
       >
         Lock
@@ -101,7 +101,7 @@ export const Rule = (props: RuleProps) => {
       <button
         data-testid="delete-rule-button"
         class="delete-button"
-        disabled={config.disabled || props.parentLocked || props.rule.locked}
+        disabled={config().disabled || props.parentLocked || props.rule.locked}
         onClick={() => dispatch({ type: 'delete-rule', payload: { path: props.path } })}
       >
         Delete

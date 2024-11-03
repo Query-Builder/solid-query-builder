@@ -7,15 +7,22 @@ import { queryBuilderReducer } from 'src/reducer';
 import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
 import { getDefaultRuleGroup, defaultProps } from 'src/utils';
 
-type Config = Pick<
+type WithRequired<T, K extends keyof T> = T & Required<Pick<T, K>>;
+
+type Config = WithRequired<
   QueryBuilderConfig,
-  'showNotToggle' | 'disabled' | 'combinators' | 'showShiftActions' | 'allowDragAndDrop'
+  | 'showNotToggle'
+  | 'disabled'
+  | 'combinators'
+  | 'showShiftActions'
+  | 'allowDragAndDrop'
+  | 'addSingleRuleToGroup'
 >;
 
 type QueryBuilderContext = [
   store: Query,
   dispatch: (action: QueryBuilderActions) => void,
-  config: Config,
+  config: () => Config,
 ];
 
 const QueryBuilderContext = createContext<QueryBuilderContext>();
@@ -29,13 +36,14 @@ type QueryBuilderProviderProps = Pick<
   | 'combinators'
   | 'showShiftActions'
   | 'allowDragAndDrop'
+  | 'addSingleRuleToGroup'
 > & {
   children: JSX.Element;
 };
 
-const getInitialQuery = (initialQuery?: Query): Query => {
+const getInitialQuery = (initialQuery?: Query, addSingleRuleToGroup?: boolean): Query => {
   if (!initialQuery) {
-    return getDefaultRuleGroup();
+    return getDefaultRuleGroup(Boolean(addSingleRuleToGroup));
   }
   return initialQuery;
 };
@@ -44,11 +52,12 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
   const mergedProps = defaultProps(
     {
       showNotToggle: 'both',
-      initialQuery: getInitialQuery(props.initialQuery),
+      initialQuery: getInitialQuery(props.initialQuery, props.addSingleRuleToGroup),
       disabled: false,
       combinators: DEFAULT_COMBINATOR,
       showShiftActions: false,
       allowDragAndDrop: false,
+      addSingleRuleToGroup: false,
     },
     props,
   );
@@ -58,16 +67,19 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
     mergedProps.initialQuery,
   );
 
-  const config: Config = {
-    showNotToggle: mergedProps.showNotToggle,
-    disabled: mergedProps.disabled,
-    combinators: mergedProps.combinators,
-    showShiftActions: mergedProps.showShiftActions,
-    allowDragAndDrop: mergedProps.allowDragAndDrop,
+  const getConfig = () => {
+    return {
+      showNotToggle: mergedProps.showNotToggle,
+      disabled: mergedProps.disabled,
+      combinators: mergedProps.combinators,
+      showShiftActions: mergedProps.showShiftActions,
+      allowDragAndDrop: mergedProps.allowDragAndDrop,
+      addSingleRuleToGroup: mergedProps.addSingleRuleToGroup,
+    };
   };
 
   return (
-    <QueryBuilderContext.Provider value={[store, dispatch, config]}>
+    <QueryBuilderContext.Provider value={[store, dispatch, getConfig]}>
       {props.children}
     </QueryBuilderContext.Provider>
   );

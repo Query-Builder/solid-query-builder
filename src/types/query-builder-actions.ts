@@ -11,6 +11,7 @@ type Add_Rule_Group = {
   type: 'add-rule-group';
   payload: {
     path: Path;
+    addSingleRuleToGroup: boolean;
   };
 };
 

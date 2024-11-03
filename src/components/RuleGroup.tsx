@@ -26,7 +26,7 @@ export const RuleGroup = (props: RuleGroupProps) => {
       data-rule-group-id={props.query.id}
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
-      aria-disabled={config.disabled || props.query.locked}
+      aria-disabled={config().disabled || props.query.locked}
       data-locked={props.query.locked}
     >
       <RuleGroupHeader

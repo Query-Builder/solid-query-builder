@@ -14,7 +14,7 @@ export const ShiftActions = (props: ShiftActionsProps) => {
     <div data-testid="shift-actions" class="shift-actions">
       <button
         data-testid="shift-up"
-        disabled={config.disabled || props.shiftUpDisabled}
+        disabled={config().disabled || props.shiftUpDisabled}
         onClick={() =>
           dispatch({
             type: 'shift-up',
@@ -26,7 +26,7 @@ export const ShiftActions = (props: ShiftActionsProps) => {
       </button>
       <button
         data-testid="shift-down"
-        disabled={config.disabled || props.shiftDownDisabled}
+        disabled={config().disabled || props.shiftDownDisabled}
         onClick={() =>
           dispatch({
             type: 'shift-down',

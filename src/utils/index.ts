@@ -23,12 +23,12 @@ export const cloneRuleGroupWithUpdatedIds = (targetRuleGroup: RuleGroupType) => 
   return clonedRuleGroup;
 };
 
-export const getDefaultRuleGroup = (): RuleGroupType => ({
+export const getDefaultRuleGroup = (addSingleRuleToGroup: boolean): RuleGroupType => ({
   id: uuidv4(),
   combinator: 'AND',
   locked: false,
   not: false,
-  rules: [],
+  rules: [...(addSingleRuleToGroup ? [getDefaultRule()] : [])],
 });
 
 export const getDefaultRule = (): RuleType => ({

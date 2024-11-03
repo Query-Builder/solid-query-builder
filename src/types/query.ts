@@ -26,4 +26,6 @@ export type QueryBuilderConfig = {
   showShiftActions?: boolean;
   /** If provided, it will allow the drag and drop feature to move the rules or rule groups up or down  */
   allowDragAndDrop?: boolean;
+  /** If provided, it will allow add an single rule to new group, else it will be an empty group */
+  addSingleRuleToGroup?: boolean;
 };

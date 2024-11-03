@@ -77,10 +77,11 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
     }
     case 'add-rule-group': {
       const parentGroupPath = action.payload.path;
+      const addSingleRuleToGroup = action.payload.addSingleRuleToGroup;
       const parentGroup = findRuleGroupByPath(draftState, parentGroupPath);
 
       if (parentGroup) {
-        parentGroup.rules.push(getDefaultRuleGroup());
+        parentGroup.rules.push(getDefaultRuleGroup(addSingleRuleToGroup));
       }
 
       return draftState;
