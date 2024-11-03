@@ -13,7 +13,7 @@ export const ConstraintDrag = (props: ConstraintDragProps) => {
   const [{ active }, { onDragStart, onDragMove, onDragEnd, addTransformer, removeTransformer }] =
     useDragDropContext()!;
 
-  const { setDropPosition } = useQueryBuilderDNDContext();
+  const { dndConfig, setDropPosition } = useQueryBuilderDNDContext();
 
   const restrictToQueryBuilderContainer: Transformer = {
     id: 'restrict-to-query-builder-container',
@@ -56,12 +56,14 @@ export const ConstraintDrag = (props: ConstraintDragProps) => {
 
   onDragMove(() => {
     if (active.draggable && active.droppable && active.overlay) {
-      // console.log();
       if (active.draggable.id === active.droppable.id) {
         return;
       }
-      const draggablePath = active.draggable.data.path as Path;
-      const droppablePath = active.droppable.data.path as Path;
+      // TODO: this is not correct as solid-dnd doesn't udpate the path...
+      // const draggablePath = active.draggable.data.path as Path;
+      // const droppablePath = active.droppable.data.path as Path;
+      const draggablePath = JSON.parse(dndConfig().ruleIdToPathMapping[active.draggable.id]!);
+      const droppablePath = JSON.parse(dndConfig().ruleIdToPathMapping[active.droppable.id]!);
 
       const draggablePathIdx = draggablePath.slice(-1)[0] ?? -1;
       const droppablePathIdx = droppablePath.slice(-1)[0] ?? -1;
@@ -69,8 +71,6 @@ export const ConstraintDrag = (props: ConstraintDragProps) => {
       if (draggablePathIdx < 0 || droppablePathIdx < 0) {
         return;
       }
-
-      console.log('first', draggablePath, droppablePath, draggablePathIdx, droppablePathIdx);
 
       if (active.overlay.transformed.center.y < active.droppable.transformed.center.y) {
         if (
@@ -82,10 +82,8 @@ export const ConstraintDrag = (props: ConstraintDragProps) => {
           return;
         }
 
-        // console.log('top');
         setDropPosition('top');
       } else {
-        // console.log('bottom');
         if (
           draggablePathIdx >= 0 &&
           droppablePathIdx >= 0 &&

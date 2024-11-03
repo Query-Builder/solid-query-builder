@@ -31,13 +31,6 @@ export const restrictToBoundingRect = (
   }
   // TODO: figure out a better way to restrict to right
   // else if (activeRect.right + transform.x >= boundingRect.left + boundingRect.width) {
-  //   console.log(
-  //     'right main jagah kam ho raha hai',
-  //     activeRect.right,
-  //     transform.x,
-  //     boundingRect.left,
-  //     boundingRect.width,
-  //   );
   //   value.x = boundingRect.left + boundingRect.width - activeRect.right;
   // }
 

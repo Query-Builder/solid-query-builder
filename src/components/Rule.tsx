@@ -1,4 +1,4 @@
-import { Show } from 'solid-js';
+import { createEffect, onCleanup, onMount, Show } from 'solid-js';
 import {
   createDraggable,
   createDroppable,
@@ -37,7 +37,27 @@ export const Rule = (props: RuleProps) => {
   const [{ active }] = useDragDropContext()!;
 
   const [, dispatch, config] = useQueryBuilderContext();
-  const { dndConfig } = useQueryBuilderDNDContext();
+  const { dndConfig, setRuleIdToPathMapping } = useQueryBuilderDNDContext();
+
+  onMount(() => {
+    setRuleIdToPathMapping(mapping => {
+      return { ...mapping, [props.rule.id]: JSON.stringify(props.path) };
+    });
+  });
+
+  createEffect(() => {
+    setRuleIdToPathMapping(mapping => {
+      return { ...mapping, [props.rule.id]: JSON.stringify(props.path) };
+    });
+  });
+
+  onCleanup(() => {
+    setRuleIdToPathMapping(mapping => {
+      const newMapping = { ...mapping };
+      delete newMapping[props.rule.id];
+      return newMapping;
+    });
+  });
 
   const checkIfValidDrop = () => {
     return active.draggable?.id !== active.droppable?.id && active.droppable?.id === props.rule.id;

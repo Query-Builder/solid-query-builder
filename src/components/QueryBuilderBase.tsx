@@ -17,21 +17,21 @@ export const QueryBuilderBase = () => {
   let queryBuilderRef: HTMLDivElement;
 
   const onDragEndEventHandler = (event: DragEvent) => {
-    console.log('event', event);
     const dropPosition = dndConfig().dropPosition;
     setDropPosition(null);
     if (event.droppable) {
       if (event.draggable.id === event.droppable.id) {
         return;
       }
-      console.log('droppedPath', event.droppable.data.path);
-      console.log('draggablePath', event.draggable.data.path);
-      console.log('dropPosition', dropPosition);
+
+      const sourcePath = JSON.parse(dndConfig().ruleIdToPathMapping[event.draggable.id]!);
+      const destinationPath = JSON.parse(dndConfig().ruleIdToPathMapping[event.droppable.id]!);
+
       dispatch({
         type: 'move-rule',
         payload: {
-          sourcePath: event.draggable.data.path,
-          destinationPath: event.droppable.data.path,
+          sourcePath,
+          destinationPath,
           dropPosition,
         },
       });
@@ -42,10 +42,7 @@ export const QueryBuilderBase = () => {
     <div class="query-builder" ref={queryBuilderRef!}>
       <DragDropProvider
         collisionDetector={closestCorners}
-        // onDragStart={onDragStart}
         onDragEnd={onDragEndEventHandler}
-        // onDragMove={event => console.log('onDragMove', event)}
-        // onDragOver={event => console.log('onDragOver', event)}
       >
         <DragDropSensors />
         <ConstraintDrag queryBuilderRef={queryBuilderRef!} />
