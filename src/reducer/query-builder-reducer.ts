@@ -267,6 +267,43 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       return draftState;
     }
+    case 'move-rule': {
+      const sourcePath = action.payload.sourcePath;
+      const destinationPath = action.payload.destinationPath;
+      const dropPosition = action.payload.dropPosition;
+
+      const sourceIndex = sourcePath.slice(-1)[0] ?? -1;
+      const destinationIndex = destinationPath.slice(-1)[0] ?? -1;
+      const sourceParentPath = sourcePath.slice(0, -1);
+      const destinationParentPath = destinationPath.slice(0, -1);
+
+      const sourceParentRuleGroup = findRuleGroupByPath(draftState, sourceParentPath);
+      const destinationParentRuleGroup = findRuleGroupByPath(draftState, destinationParentPath);
+
+      if (
+        sourceParentRuleGroup &&
+        destinationParentRuleGroup &&
+        sourceIndex >= 0 &&
+        sourceIndex < sourceParentRuleGroup.rules.length
+      ) {
+        const currentItem = sourceParentRuleGroup.rules[sourceIndex]!;
+
+        if (destinationIndex >= 0 && destinationIndex < destinationParentRuleGroup.rules.length) {
+          if (dropPosition === 'top') {
+            destinationParentRuleGroup.rules.splice(destinationIndex, 0, currentItem);
+            sourceParentRuleGroup.rules.splice(sourceIndex, 1);
+          } else {
+            destinationParentRuleGroup.rules.splice(destinationIndex + 1, 0, currentItem);
+            sourceParentRuleGroup.rules.splice(sourceIndex, 1);
+          }
+        } else {
+          destinationParentRuleGroup.rules.push(currentItem);
+          sourceParentRuleGroup.rules.splice(sourceIndex, 1);
+        }
+      }
+
+      return draftState;
+    }
     default: {
       return draftState;
     }

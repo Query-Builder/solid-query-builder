@@ -1,4 +1,4 @@
-import { type Path } from './base';
+import type { Position, Path } from './base';
 
 type Add_Rule = {
   type: 'add-rule';
@@ -94,6 +94,15 @@ type Shift_Down = {
   };
 };
 
+type Move_Rule = {
+  type: 'move-rule';
+  payload: {
+    sourcePath: Path;
+    destinationPath: Path;
+    dropPosition: Position;
+  };
+};
+
 type RuleGroupActions =
   | Add_Rule
   | Add_Rule_Group
@@ -104,7 +113,7 @@ type RuleGroupActions =
   | Negate_Rule_Group
   | Toggle_Combinator;
 
-type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule;
+type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule | Move_Rule;
 
 type CommonActions = Shift_Up | Shift_Down;
 

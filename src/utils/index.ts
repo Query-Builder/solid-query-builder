@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { Path, RuleGroupType, RuleType } from 'src/types';
 
+export * from './dnd-utils';
+
+// TODO: move below utils to other files..
 export const cloneRuleGroupWithUpdatedIds = (targetRuleGroup: RuleGroupType) => {
   let clonedRuleGroup = { ...targetRuleGroup, id: uuidv4() };
 
