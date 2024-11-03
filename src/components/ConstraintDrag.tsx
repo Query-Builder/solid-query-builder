@@ -1,7 +1,5 @@
 import { useDragDropContext, type Transformer } from '@thisbeyond/solid-dnd';
-import { unwrap } from 'solid-js/store';
 import { useQueryBuilderDNDContext } from 'src/context';
-import { type Path } from 'src/types';
 import { restrictToBoundingRect } from 'src/utils';
 
 type ConstraintDragProps = {
