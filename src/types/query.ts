@@ -22,4 +22,10 @@ export type QueryBuilderConfig = {
   disabled?: boolean;
   /** If not provided, it would use default combinator of AND and OR */
   combinators?: Combinator[];
+  /** If provided, it will show the shift actions with ability to move the rules or rule groups up or down  */
+  showShiftActions?: boolean;
+  /** If provided, it will allow the drag and drop feature to move the rules or rule groups up or down  */
+  allowDragAndDrop?: boolean;
+  /** If provided, it will allow add an single rule to new group, else it will be an empty group */
+  addSingleRuleToGroup?: boolean;
 };

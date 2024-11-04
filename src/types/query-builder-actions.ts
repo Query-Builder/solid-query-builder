@@ -1,4 +1,4 @@
-import { type Path } from './base';
+import type { Position, Path } from './base';
 
 type Add_Rule = {
   type: 'add-rule';
@@ -11,6 +11,7 @@ type Add_Rule_Group = {
   type: 'add-rule-group';
   payload: {
     path: Path;
+    addSingleRuleToGroup: boolean;
   };
 };
 
@@ -58,16 +59,6 @@ type Toggle_Combinator = {
   };
 };
 
-type RuleGroupActions =
-  | Add_Rule
-  | Add_Rule_Group
-  | Clone_Rule_Group
-  | Ungroup_Rule_Group
-  | Delete_Rule_Group
-  | Lock_Rule_Group
-  | Negate_Rule_Group
-  | Toggle_Combinator;
-
 type Lock_Rule = {
   type: 'lock-rule';
   payload: {
@@ -89,6 +80,41 @@ type Negate_Rule = {
   };
 };
 
-type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule;
+type Shift_Up = {
+  type: 'shift-up';
+  payload: {
+    path: Path;
+  };
+};
 
-export type QueryBuilderActions = RuleGroupActions | RuleActions;
+type Shift_Down = {
+  type: 'shift-down';
+  payload: {
+    path: Path;
+  };
+};
+
+type Move_Rule = {
+  type: 'move-rule';
+  payload: {
+    sourcePath: Path;
+    destinationPath: Path;
+    dropPosition: Position;
+  };
+};
+
+type RuleGroupActions =
+  | Add_Rule
+  | Add_Rule_Group
+  | Clone_Rule_Group
+  | Ungroup_Rule_Group
+  | Delete_Rule_Group
+  | Lock_Rule_Group
+  | Negate_Rule_Group
+  | Toggle_Combinator;
+
+type RuleActions = Lock_Rule | Delete_Rule | Negate_Rule | Move_Rule;
+
+type CommonActions = Shift_Up | Shift_Down;
+
+export type QueryBuilderActions = RuleGroupActions | RuleActions | CommonActions;

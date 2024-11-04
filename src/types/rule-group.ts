@@ -1,4 +1,4 @@
-import { type Combinator } from './base';
+import { type Combinator } from './combinator';
 import { type RuleType } from './rule';
 
 export type RulesType = (RuleType | RuleGroupType)[];
@@ -6,8 +6,8 @@ export type RulesType = (RuleType | RuleGroupType)[];
 export type RuleGroupType = {
   /** UUID v4 */
   id: string;
-  /** Combinator support to be AND or OR */
-  combinator: Combinator;
+  /** selected combinator */
+  combinator: string;
   /** Lock the group to prevent any changes to the group */
   locked?: boolean;
   /** Negate the group to return the opposite result */
