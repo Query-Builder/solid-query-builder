@@ -1,11 +1,11 @@
 .query-builder {
   min-width: 400px;
-  border-radius: 0.25rem;
+  border-radius: 5px;
 }
 
 .rule-group {
   padding: 0.5rem;
-  border-radius: 0.25rem;
+  border-radius: 5px;
   border: 1px solid #333;
 }
 
@@ -13,6 +13,83 @@
   display: flex;
   align-items: center;
   border: 1px solid #333;
-  padding: 10px;
   margin: 5px;
+  column-gap: 5px;
+  padding: 5px 10px;
+}
+
+.rule-group__header {
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rule-group__body {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.shift-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shift-actions > button {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.dragHandle {
+  cursor: move;
+}
+
+.rule {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.rule.rule-drop-top {
+  border: 1px dashed blue;
+}
+
+.rule.rule-drop-bottom {
+  border: 1px dashed blue;
+}
+
+.rule.rule-drop-top::before {
+  content: '';
+  position: absolute;
+  border: 1px dashed red;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  transform: translate(0, -5px);
+}
+
+.rule.rule-drop-bottom::after {
+  content: '';
+  position: absolute;
+  border: 1px dashed red;
+  bottom: 0%;
+  left: 0%;
+  width: 100%;
+  transform: translate(0, 5px);
+}
+
+.drag-overlay {
+  border: 1px solid black;
+  width: max-content;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: #e1e2e2;
+  opacity: 0.5;
+  z-index: 2;
 }

@@ -1,9 +1,18 @@
-import { Show, For, createEffect, createSignal } from 'solid-js';
+import { Show, For, createEffect, createSignal, onCleanup, onMount } from 'solid-js';
+import {
+  createDraggable,
+  createDroppable,
+  DragOverlay,
+  transformStyle,
+  useDragDropContext,
+} from '@thisbeyond/solid-dnd';
 
 import { ValueEditor } from './ValueEditor';
 import ValueSelector from './ValueSelector';
+import { ShiftActions } from './ShiftActions';
+import { DragHandle } from './DragHandle';
 
-import { useQueryBuilderContext } from 'src/context';
+import { useQueryBuilderContext, useQueryBuilderDNDContext } from 'src/context';
 
 import { defaultOperators } from 'src/constants';
 
@@ -15,11 +24,21 @@ import type {
   RuleType,
   OperatorsList,
 } from 'src/types';
-
 type RuleProps = {
   path: Path;
   rule: RuleType;
   parentLocked: boolean;
+  shiftUpDisabled: boolean;
+  shiftDownDisabled: boolean;
+};
+
+type RefSetter<V> = (value: V) => void;
+
+const combineRefs = <V,>(setRefA: RefSetter<V>, setRefB: RefSetter<V>): RefSetter<V> => {
+  return ref => {
+    setRefA(ref);
+    setRefB(ref);
+  };
 };
 
 const getFieldFromName = (field: string | null, fields: Fields[]) =>
@@ -45,6 +64,26 @@ export const Rule = (props: RuleProps) => {
 
   const [ruleOperators, setRuleOperators] = createSignal<OperatorsList | null>(null);
 
+  const draggable = createDraggable(props.rule.id, { rule: props.rule, path: props.path });
+  const droppable = createDroppable(props.rule.id, { rule: props.rule, path: props.path });
+  const combinedRef = combineRefs(draggable.ref, droppable.ref);
+
+  const [{ active }] = useDragDropContext()!;
+
+  const { dndConfig, setRuleIdToPathMapping } = useQueryBuilderDNDContext();
+
+  onMount(() => {
+    setRuleIdToPathMapping(mapping => {
+      return { ...mapping, [props.rule.id]: JSON.stringify(props.path) };
+    });
+  });
+
+  createEffect(() => {
+    setRuleIdToPathMapping(mapping => {
+      return { ...mapping, [props.rule.id]: JSON.stringify(props.path) };
+    });
+  });
+
   createEffect(() => {
     if (props.rule.field) {
       setRuleOperators(
@@ -52,6 +91,18 @@ export const Rule = (props: RuleProps) => {
       );
     }
   });
+
+  onCleanup(() => {
+    setRuleIdToPathMapping(mapping => {
+      const newMapping = { ...mapping };
+      delete newMapping[props.rule.id];
+      return newMapping;
+    });
+  });
+
+  const checkIfValidDrop = () => {
+    return active.draggable?.id !== active.droppable?.id && active.droppable?.id === props.rule.id;
+  };
 
   const currentFieldData = () => getFieldFromName(props.rule.field, config().fields);
 
@@ -70,8 +121,19 @@ export const Rule = (props: RuleProps) => {
 
   return (
     <div
+      tabIndex={0}
+      ref={combinedRef}
+      style={transformStyle(draggable.transform)}
       data-testid="rule"
-      class={['rule', props.rule.locked ? 'rule-disabled' : ''].join(' ')}
+      class={[
+        'rule',
+        'draggable-container',
+        props.rule.locked ? 'rule-disabled' : '',
+        dndConfig().dropPosition === 'top' && checkIfValidDrop() ? 'rule-drop-top' : '',
+        dndConfig().dropPosition === 'bottom' && checkIfValidDrop() ? 'rule-drop-bottom' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
       data-rule-id={props.rule.id}
@@ -83,7 +145,7 @@ export const Rule = (props: RuleProps) => {
         name="fields"
         id="fields"
         onChange={e => {
-          const field = config().fields.find(f => f.name === e.target.value);
+          const field = config().fields.find((f: Fields) => f.name === e.target.value);
           if (field) {
             dispatch({ type: 'set-field', payload: { path: props.path, field } });
           }
@@ -98,12 +160,11 @@ export const Rule = (props: RuleProps) => {
           }}
         </For>
       </select>
-
       {/*Rule Operator*/}
       <Show when={props.rule.field !== null}>
         <Show
-          when={config().controlElements?.customOperators?.(currentFieldData()) === null}
-          fallback={config().controlElements?.customOperators?.(currentFieldData())}
+          when={config().controlElements.customOperators?.(currentFieldData()) === null}
+          fallback={config().controlElements.customOperators?.(currentFieldData())}
         >
           <select
             name="operators"
@@ -128,12 +189,11 @@ export const Rule = (props: RuleProps) => {
           </select>
         </Show>
       </Show>
-
       {/*Rule fieldValue*/}
       <Show when={props.rule.field !== null && props.rule.operator !== null}>
         <Show
-          when={config().controlElements?.customValueEditor?.(customValueEditorProp()) === null}
-          fallback={config().controlElements?.customValueEditor?.(customValueEditorProp())}
+          when={config().controlElements.customValueEditor?.(customValueEditorProp()) === null}
+          fallback={config().controlElements.customValueEditor?.(customValueEditorProp())}
         >
           <ValueEditor
             disabled={config().disabled}
@@ -156,8 +216,18 @@ export const Rule = (props: RuleProps) => {
           />
         </Show>
       </Show>
-
       {/*Rule Actions*/}
+      <Show when={config().showShiftActions} fallback={null}>
+        <ShiftActions
+          path={props.path}
+          shiftUpDisabled={props.parentLocked || props.rule.locked || props.shiftUpDisabled}
+          shiftDownDisabled={props.parentLocked || props.rule.locked || props.shiftDownDisabled}
+        />
+      </Show>
+      <Show when={config().allowDragAndDrop} fallback={null}>
+        <DragHandle dragActivators={draggable.dragActivators} />
+      </Show>
+      Rule: {props.path} ==== {JSON.stringify(props.rule.id)}
       <Show when={config().showNotToggle === 'both' || config().showNotToggle === 'rule'}>
         <label>
           <input
@@ -186,6 +256,9 @@ export const Rule = (props: RuleProps) => {
       >
         Delete
       </button>
+      <DragOverlay>
+        <div class="drag-overlay">{props.rule.field}</div>
+      </DragOverlay>
     </div>
   );
 };

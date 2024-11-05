@@ -1,7 +1,7 @@
 import type { FieldsValue } from './fieldsValue';
 
 export type RuleType = {
-  id: string | null;
+  id: string;
   field: string | null;
   fieldValue: FieldsValue;
   operator: string | null;

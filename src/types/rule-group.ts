@@ -5,7 +5,7 @@ export type RulesType = (RuleType | RuleGroupType)[];
 export type RuleGroupType = {
   /** UUID v4 */
   id: string;
-  /** Combinator support to be AND or OR */
+  /** selected combinator */
   combinator: string;
   /** Lock the group to prevent any changes to the group */
   locked?: boolean;

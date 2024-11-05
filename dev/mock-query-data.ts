@@ -14,6 +14,12 @@ export const MOCK_QUERY_DATA: Query = {
     },
     {
       id: uuidv4(),
+      field: 'XYZ-2',
+      fieldValue: 'ABC-2',
+      operator: '=',
+    },
+    {
+      id: uuidv4(),
       combinator: 'OR',
       rules: [
         {
@@ -26,8 +32,8 @@ export const MOCK_QUERY_DATA: Query = {
     },
     {
       id: uuidv4(),
-      field: 'XYZ-2',
-      fieldValue: 'ABC-2',
+      field: 'XYZ-4',
+      fieldValue: 'ABC-4',
       operator: '=',
     },
   ],

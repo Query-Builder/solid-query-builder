@@ -1,5 +1,5 @@
 import { QueryBuilderBase } from './components';
-import { QueryBuilderProvider } from './context/QueryBuilderContext';
+import { QueryBuilderProvider, QueryBuilderDNDContextProvider } from './context';
 
 import type { QueryBuilderConfig } from './types';
 
@@ -13,7 +13,9 @@ type QueryBuilderProps = QueryBuilderConfig;
 export const QueryBuilder = (props: QueryBuilderProps) => {
   return (
     <QueryBuilderProvider {...props}>
-      <QueryBuilderBase />
+      <QueryBuilderDNDContextProvider>
+        <QueryBuilderBase />
+      </QueryBuilderDNDContextProvider>
     </QueryBuilderProvider>
   );
 };

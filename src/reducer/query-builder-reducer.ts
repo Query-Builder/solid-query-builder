@@ -77,10 +77,11 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
     }
     case 'add-rule-group': {
       const parentGroupPath = action.payload.path;
+      const addSingleRuleToGroup = action.payload.addSingleRuleToGroup;
       const parentGroup = findRuleGroupByPath(draftState, parentGroupPath);
 
       if (parentGroup) {
-        parentGroup.rules.push(getDefaultRuleGroup());
+        parentGroup.rules.push(getDefaultRuleGroup(addSingleRuleToGroup));
       }
 
       return draftState;
@@ -202,10 +203,8 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
       if (targetRule) {
         targetRule.field = action.payload.field.name;
       }
-
       return draftState;
     }
-
     case 'set-operator': {
       const targetPath = action.payload.path;
       const targetRule = findRuleByPath(draftState, targetPath);
@@ -216,13 +215,120 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       return draftState;
     }
-
     case 'set-field-value': {
       const targetPath = action.payload.path;
       const targetRule = findRuleByPath(draftState, targetPath);
 
       if (targetRule) {
         targetRule.fieldValue = action.payload.fieldValue;
+      }
+
+      return draftState;
+    }
+    case 'shift-up': {
+      const currentPath = action.payload.path;
+      const targetIndex = currentPath.slice(-1)[0] ?? -1;
+      const parentGroupPath = currentPath.slice(0, -1);
+      const parentRuleGroup = findRuleGroupByPath(draftState, parentGroupPath);
+
+      if (parentRuleGroup && targetIndex >= 0 && targetIndex < parentRuleGroup.rules.length) {
+        const currentItem = parentRuleGroup.rules[targetIndex];
+        const aboveItem = parentRuleGroup.rules[targetIndex - 1];
+
+        if (currentItem && aboveItem && 'rules' in aboveItem) {
+          // Move temp inside the above rule group as the last rule or group only if it's not locked...
+          if (!aboveItem.locked) {
+            aboveItem.rules.push(currentItem);
+            parentRuleGroup.rules.splice(targetIndex, 1);
+          }
+          return draftState;
+        } else if (currentItem && aboveItem) {
+          // Swap with the above item
+          parentRuleGroup.rules[targetIndex] = parentRuleGroup.rules[targetIndex - 1]!;
+          parentRuleGroup.rules[targetIndex - 1] = currentItem;
+        } else if (currentItem && !aboveItem) {
+          // Move temp to the grand parent group
+          const grandParentGroupPath = parentGroupPath.slice(0, -1);
+          const grandParentRuleGroup = findRuleGroupByPath(draftState, grandParentGroupPath);
+          const grandParentIndex = parentGroupPath.slice(-1)[0] ?? -1;
+
+          if (grandParentRuleGroup && grandParentIndex >= 0) {
+            grandParentRuleGroup.rules.splice(grandParentIndex, 0, currentItem);
+            parentRuleGroup.rules.splice(targetIndex, 1);
+          }
+        }
+      }
+
+      return draftState;
+    }
+    case 'shift-down': {
+      const currentPath = action.payload.path;
+      const targetIndex = currentPath.slice(-1)[0] ?? -1;
+      const parentGroupPath = currentPath.slice(0, -1);
+      const parentRuleGroup = findRuleGroupByPath(draftState, parentGroupPath);
+
+      if (parentRuleGroup && targetIndex >= 0 && targetIndex < parentRuleGroup.rules.length) {
+        const currentItem = parentRuleGroup.rules[targetIndex];
+        const belowItem = parentRuleGroup.rules[targetIndex + 1];
+
+        if (currentItem && belowItem && 'rules' in belowItem) {
+          // Move temp inside the below rule group as the first rule or group only if it's not locked...
+          if (!belowItem.locked) {
+            belowItem.rules.unshift(currentItem);
+            parentRuleGroup.rules.splice(targetIndex, 1);
+          }
+        } else if (currentItem && belowItem) {
+          // Swap with the below item
+          parentRuleGroup.rules[targetIndex] = parentRuleGroup.rules[targetIndex + 1]!;
+          parentRuleGroup.rules[targetIndex + 1] = currentItem;
+        } else if (currentItem && !belowItem) {
+          // Move temp to the grand parent group
+          const grandParentGroupPath = parentGroupPath.slice(0, -1);
+          const grandParentRuleGroup = findRuleGroupByPath(draftState, grandParentGroupPath);
+          const grandParentIndex = parentGroupPath.slice(-1)[0] ?? -1;
+
+          if (grandParentRuleGroup && grandParentIndex >= 0) {
+            grandParentRuleGroup.rules.splice(grandParentIndex + 1, 0, currentItem);
+            parentRuleGroup.rules.splice(targetIndex, 1);
+          }
+        }
+      }
+
+      return draftState;
+    }
+    case 'move-rule': {
+      const sourcePath = action.payload.sourcePath;
+      const destinationPath = action.payload.destinationPath;
+      const dropPosition = action.payload.dropPosition;
+
+      const sourceIndex = sourcePath.slice(-1)[0] ?? -1;
+      const destinationIndex = destinationPath.slice(-1)[0] ?? -1;
+      const sourceParentPath = sourcePath.slice(0, -1);
+      const destinationParentPath = destinationPath.slice(0, -1);
+
+      const sourceParentRuleGroup = findRuleGroupByPath(draftState, sourceParentPath);
+      const destinationParentRuleGroup = findRuleGroupByPath(draftState, destinationParentPath);
+
+      if (
+        sourceParentRuleGroup &&
+        destinationParentRuleGroup &&
+        sourceIndex >= 0 &&
+        sourceIndex < sourceParentRuleGroup.rules.length
+      ) {
+        const currentItem = sourceParentRuleGroup.rules[sourceIndex]!;
+
+        if (destinationIndex >= 0 && destinationIndex < destinationParentRuleGroup.rules.length) {
+          if (dropPosition === 'top') {
+            destinationParentRuleGroup.rules.splice(destinationIndex, 0, currentItem);
+            sourceParentRuleGroup.rules.splice(sourceIndex, 1);
+          } else {
+            destinationParentRuleGroup.rules.splice(destinationIndex + 1, 0, currentItem);
+            sourceParentRuleGroup.rules.splice(sourceIndex, 1);
+          }
+        } else {
+          destinationParentRuleGroup.rules.push(currentItem);
+          sourceParentRuleGroup.rules.splice(sourceIndex, 1);
+        }
       }
 
       return draftState;
