@@ -14,16 +14,20 @@ type Config = WithRequired<
   | 'showNotToggle'
   | 'disabled'
   | 'combinators'
+  | 'fields'
+  | 'operators'
+  | 'getOperators'
+  | 'controlElements'
   | 'showShiftActions'
   | 'allowDragAndDrop'
   | 'addSingleRuleToGroup'
 >;
 
-type QueryBuilderContext = [
-  store: Query,
-  dispatch: (action: QueryBuilderActions) => void,
-  config: () => Config,
-];
+type QueryBuilderContext = {
+  store: Query;
+  dispatch: (action: QueryBuilderActions) => void;
+  config: () => Config;
+};
 
 const QueryBuilderContext = createContext<QueryBuilderContext>();
 
@@ -34,6 +38,10 @@ type QueryBuilderProviderProps = Pick<
   | 'showNotToggle'
   | 'disabled'
   | 'combinators'
+  | 'fields'
+  | 'operators'
+  | 'getOperators'
+  | 'controlElements'
   | 'showShiftActions'
   | 'allowDragAndDrop'
   | 'addSingleRuleToGroup'
@@ -55,6 +63,12 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       initialQuery: getInitialQuery(props.initialQuery, props.addSingleRuleToGroup),
       disabled: false,
       combinators: DEFAULT_COMBINATOR,
+      operators: null,
+      getOperators: () => null,
+      controlElements: {
+        customOperators: () => null,
+        customValueEditor: () => null,
+      },
       showShiftActions: false,
       allowDragAndDrop: false,
       addSingleRuleToGroup: false,
@@ -72,6 +86,10 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       showNotToggle: mergedProps.showNotToggle,
       disabled: mergedProps.disabled,
       combinators: mergedProps.combinators,
+      fields: props.fields,
+      operators: mergedProps.operators,
+      getOperators: mergedProps.getOperators,
+      controlElements: mergedProps.controlElements,
       showShiftActions: mergedProps.showShiftActions,
       allowDragAndDrop: mergedProps.allowDragAndDrop,
       addSingleRuleToGroup: mergedProps.addSingleRuleToGroup,
@@ -79,7 +97,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
   };
 
   return (
-    <QueryBuilderContext.Provider value={[store, dispatch, getConfig]}>
+    <QueryBuilderContext.Provider value={{ store, dispatch, config: getConfig }}>
       {props.children}
     </QueryBuilderContext.Provider>
   );

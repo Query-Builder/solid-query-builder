@@ -1,4 +1,4 @@
-import { createEffect, onCleanup, onMount, Show } from 'solid-js';
+import { Show, For, createEffect, createSignal, onCleanup, onMount } from 'solid-js';
 import {
   createDraggable,
   createDroppable,
@@ -6,12 +6,24 @@ import {
   transformStyle,
   useDragDropContext,
 } from '@thisbeyond/solid-dnd';
-import { useQueryBuilderContext, useQueryBuilderDNDContext } from 'src/context';
 
-import type { Path, RuleType } from 'src/types';
+import { ValueEditor } from './ValueEditor';
+import ValueSelector from './ValueSelector';
 import { ShiftActions } from './ShiftActions';
 import { DragHandle } from './DragHandle';
 
+import { useQueryBuilderContext, useQueryBuilderDNDContext } from 'src/context';
+
+import { defaultOperators } from 'src/constants';
+
+import type {
+  CustomValueEditorProps,
+  Fields,
+  FieldsValue,
+  Path,
+  RuleType,
+  OperatorsList,
+} from 'src/types';
 type RuleProps = {
   path: Path;
   rule: RuleType;
@@ -29,14 +41,35 @@ const combineRefs = <V,>(setRefA: RefSetter<V>, setRefB: RefSetter<V>): RefSette
   };
 };
 
+const getFieldFromName = (field: string | null, fields: Fields[]) =>
+  field ? fields.find(f => f.name === field) : undefined;
+
+const getOperatorsFromField = (
+  field: string,
+  operators: OperatorsList | null | undefined,
+  fieldList: Fields[],
+) => {
+  const fieldOperators = getFieldFromName(field, fieldList)?.operators;
+  if (fieldOperators) {
+    return fieldOperators;
+  } else if (operators && operators.length > 0) {
+    return operators;
+  } else {
+    return defaultOperators;
+  }
+};
+
 export const Rule = (props: RuleProps) => {
+  const { dispatch, config } = useQueryBuilderContext();
+
+  const [ruleOperators, setRuleOperators] = createSignal<OperatorsList | null>(null);
+
   const draggable = createDraggable(props.rule.id, { rule: props.rule, path: props.path });
   const droppable = createDroppable(props.rule.id, { rule: props.rule, path: props.path });
   const combinedRef = combineRefs(draggable.ref, droppable.ref);
 
   const [{ active }] = useDragDropContext()!;
 
-  const [, dispatch, config] = useQueryBuilderContext();
   const { dndConfig, setRuleIdToPathMapping } = useQueryBuilderDNDContext();
 
   onMount(() => {
@@ -51,6 +84,14 @@ export const Rule = (props: RuleProps) => {
     });
   });
 
+  createEffect(() => {
+    if (props.rule.field) {
+      setRuleOperators(
+        getOperatorsFromField(props.rule.field, config().operators, config().fields),
+      );
+    }
+  });
+
   onCleanup(() => {
     setRuleIdToPathMapping(mapping => {
       const newMapping = { ...mapping };
@@ -62,6 +103,21 @@ export const Rule = (props: RuleProps) => {
   const checkIfValidDrop = () => {
     return active.draggable?.id !== active.droppable?.id && active.droppable?.id === props.rule.id;
   };
+
+  const currentFieldData = () => getFieldFromName(props.rule.field, config().fields);
+
+  const customValueEditorProp = () =>
+    ({
+      fieldData: currentFieldData(),
+      operator: props.rule.operator,
+      value: props.rule.fieldValue,
+      handleOnChange: (value: FieldsValue) => {
+        dispatch({
+          type: 'set-field-value',
+          payload: { path: props.path, fieldValue: value },
+        });
+      },
+    }) as CustomValueEditorProps;
 
   return (
     <div
@@ -84,6 +140,83 @@ export const Rule = (props: RuleProps) => {
       aria-disabled={config().disabled || props.parentLocked || props.rule.locked}
       data-disabled={config().disabled || props.parentLocked || props.rule.locked}
     >
+      {/*Rule Fields*/}
+      <select
+        name="fields"
+        id="fields"
+        onChange={e => {
+          const field = config().fields.find((f: Fields) => f.name === e.target.value);
+          if (field) {
+            dispatch({ type: 'set-field', payload: { path: props.path, field } });
+          }
+        }}
+      >
+        <Show when={props.rule.field === null}>
+          <option>----</option>
+        </Show>
+        <For each={config().fields}>
+          {field => {
+            return <option>{field.name}</option>;
+          }}
+        </For>
+      </select>
+      {/*Rule Operator*/}
+      <Show when={props.rule.field !== null}>
+        <Show
+          when={config().controlElements.customOperators?.(currentFieldData()) === null}
+          fallback={config().controlElements.customOperators?.(currentFieldData())}
+        >
+          <select
+            name="operators"
+            id="operators"
+            onChange={e => {
+              if (ruleOperators()) {
+                const operator = ruleOperators()?.find(f => f.value === e.target.value);
+                if (operator) {
+                  dispatch({ type: 'set-operator', payload: { path: props.path, operator } });
+                }
+              }
+            }}
+          >
+            <Show when={props.rule.operator === null}>
+              <option>----</option>
+            </Show>
+            <For each={ruleOperators()}>
+              {field => {
+                return <option>{field.value}</option>;
+              }}
+            </For>
+          </select>
+        </Show>
+      </Show>
+      {/*Rule fieldValue*/}
+      <Show when={props.rule.field !== null && props.rule.operator !== null}>
+        <Show
+          when={config().controlElements.customValueEditor?.(customValueEditorProp()) === null}
+          fallback={config().controlElements.customValueEditor?.(customValueEditorProp())}
+        >
+          <ValueEditor
+            disabled={config().disabled}
+            fieldData={currentFieldData()}
+            inputType={currentFieldData()?.inputType}
+            listsAsArrays={currentFieldData()?.listAsArrays}
+            operator={props.rule.operator ?? ''}
+            separator={currentFieldData()?.separator}
+            title={currentFieldData()?.title}
+            valueEditorType={currentFieldData()?.valueEditorType}
+            values={currentFieldData()?.values ?? []}
+            value={props.rule.fieldValue}
+            selectorComponent={ValueSelector}
+            handleOnChange={(value: FieldsValue) => {
+              dispatch({
+                type: 'set-field-value',
+                payload: { path: props.path, fieldValue: value },
+              });
+            }}
+          />
+        </Show>
+      </Show>
+      {/*Rule Actions*/}
       <Show when={config().showShiftActions} fallback={null}>
         <ShiftActions
           path={props.path}

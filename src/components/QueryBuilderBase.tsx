@@ -12,7 +12,7 @@ import { RuleGroup } from './RuleGroup';
 import { useQueryBuilderDNDContext } from 'src/context';
 
 export const QueryBuilderBase = () => {
-  const [query, dispatch] = useQueryBuilderContext();
+  const { store: query, dispatch } = useQueryBuilderContext();
   const { dndConfig, setDropPosition } = useQueryBuilderDNDContext();
   let queryBuilderRef: HTMLDivElement;
 
@@ -40,10 +40,7 @@ export const QueryBuilderBase = () => {
 
   return (
     <div class="query-builder" ref={queryBuilderRef!}>
-      <DragDropProvider
-        collisionDetector={closestCorners}
-        onDragEnd={onDragEndEventHandler}
-      >
+      <DragDropProvider collisionDetector={closestCorners} onDragEnd={onDragEndEventHandler}>
         <DragDropSensors />
         <ConstraintDrag queryBuilderRef={queryBuilderRef!} />
         <RuleGroup

@@ -37,9 +37,9 @@ export const getDefaultRuleGroup = (addSingleRuleToGroup: boolean): RuleGroupTyp
 export const getDefaultRule = (): RuleType => ({
   id: uuidv4(),
   // TODO: default should be null.. or auto select...
-  field: 'field-A',
-  operator: 'operator-A',
-  fieldValue: 'field-value-A',
+  field: null,
+  operator: null,
+  fieldValue: null,
   locked: false,
   not: false,
 });

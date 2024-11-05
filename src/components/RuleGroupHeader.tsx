@@ -13,7 +13,7 @@ type RuleGroupHeaderProps = {
 };
 
 export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
-  const [, dispatch, config] = useQueryBuilderContext();
+  const { dispatch, config } = useQueryBuilderContext();
 
   return (
     <div

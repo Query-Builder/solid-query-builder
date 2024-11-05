@@ -13,7 +13,7 @@ type RuleGroupProps = {
 };
 
 export const RuleGroup = (props: RuleGroupProps) => {
-  const [, , config] = useQueryBuilderContext();
+  const { config } = useQueryBuilderContext();
 
   return (
     <div

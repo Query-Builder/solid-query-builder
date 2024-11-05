@@ -8,7 +8,7 @@ type ShiftActionsProps = {
 };
 
 export const ShiftActions = (props: ShiftActionsProps) => {
-  const [, dispatch, config] = useQueryBuilderContext();
+  const { dispatch, config } = useQueryBuilderContext();
 
   return (
     <div data-testid="shift-actions" class="shift-actions">

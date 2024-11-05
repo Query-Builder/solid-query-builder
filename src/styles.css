@@ -11,8 +11,10 @@
 
 .rule {
   display: flex;
-  column-gap: 5px;
   align-items: center;
+  border: 1px solid #333;
+  margin: 5px;
+  column-gap: 5px;
   padding: 5px 10px;
 }
 

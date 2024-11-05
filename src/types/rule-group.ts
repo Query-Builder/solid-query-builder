@@ -1,4 +1,3 @@
-import { type Combinator } from './combinator';
 import { type RuleType } from './rule';
 
 export type RulesType = (RuleType | RuleGroupType)[];
@@ -11,7 +10,7 @@ export type RuleGroupType = {
   /** Lock the group to prevent any changes to the group */
   locked?: boolean;
   /** Negate the group to return the opposite result */
-  not?: boolean
+  not?: boolean;
   /** list of rules or rule group as part of this group */
   rules: RulesType;
 };

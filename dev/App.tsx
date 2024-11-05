@@ -4,6 +4,7 @@ import { createSignal, type Component } from 'solid-js';
 import { QueryBuilder, type Not_Selection } from 'src';
 
 import { MOCK_QUERY_DATA } from './mock-query-data';
+import { FIELDSDATA, OPERATORS_DATA } from './mock-rule-data';
 
 import styles from './App.module.css';
 
@@ -95,6 +96,8 @@ const App: Component = () => {
         <section class="query-builder__section">
           <QueryBuilder
             initialQuery={MOCK_QUERY_DATA}
+            fields={FIELDSDATA}
+            operators={OPERATORS_DATA}
             showShiftActions={showShiftActions()}
             allowDragAndDrop={allowDragAndDrop()}
             disabled={disableQB()}
