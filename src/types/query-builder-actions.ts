@@ -78,7 +78,7 @@ type Change_Operator = {
 };
 
 type Change_Field_Value = {
-  type: 'set-fieldValue';
+  type: 'set-field-value';
   payload: {
     path: Path;
     fieldValue: FieldsValue;

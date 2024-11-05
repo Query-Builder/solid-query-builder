@@ -216,6 +216,17 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       return draftState;
     }
+
+    case 'set-field-value': {
+      const targetPath = action.payload.path;
+      const targetRule = findRuleByPath(draftState, targetPath);
+
+      if (targetRule) {
+        targetRule.fieldValue = action.payload.fieldValue;
+      }
+
+      return draftState;
+    }
     default: {
       return draftState;
     }

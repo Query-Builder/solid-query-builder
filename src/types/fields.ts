@@ -13,7 +13,7 @@ export type Fields = {
   operators?: OperatorsList | null;
   valueEditorType?: ValueEditorType;
   inputType?: InputType | null;
-  values?: Option<string>;
+  values?: Option<string>[];
   defaultOperator?: string;
   defaultValue?: any;
   validator?: RuleValidator;

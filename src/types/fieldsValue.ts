@@ -30,3 +30,10 @@ export type FieldsEditorProps = {
   separator?: string;
   selectorComponent: any;
 };
+
+export type CustomValueEditorProps = {
+  fieldData: Fields | undefined;
+  operator: string | null;
+  value: string | null;
+  handleOnChange: (value: FieldsValue) => void;
+};

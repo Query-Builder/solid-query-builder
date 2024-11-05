@@ -1,10 +1,20 @@
 import { Show, For, createEffect, createSignal } from 'solid-js';
+
+import { ValueEditor } from './ValueEditor';
+import ValueSelector from './ValueSelector';
+
 import { useQueryBuilderContext } from 'src/context';
 
 import { defaultOperators } from 'src/constants';
 
-import type { Fields, FieldsValue, Path, RuleType, OperatorsList } from 'src/types';
-import { ValueEditor } from './ValueEditor';
+import type {
+  CustomValueEditorProps,
+  Fields,
+  FieldsValue,
+  Path,
+  RuleType,
+  OperatorsList,
+} from 'src/types';
 
 type RuleProps = {
   path: Path;
@@ -12,7 +22,8 @@ type RuleProps = {
   parentLocked: boolean;
 };
 
-const getFieldFromName = (field: string, fields: Fields[]) => fields.find(f => f.name === field);
+const getFieldFromName = (field: string | null, fields: Fields[]) =>
+  field ? fields.find(f => f.name === field) : undefined;
 
 const getOperatorsFromField = (
   field: string,
@@ -41,6 +52,21 @@ export const Rule = (props: RuleProps) => {
       );
     }
   });
+
+  const currentFieldData = () => getFieldFromName(props.rule.field, config().fields);
+
+  const customValueEditorProp = () =>
+    ({
+      fieldData: currentFieldData(),
+      operator: props.rule.operator,
+      value: props.rule.fieldValue,
+      handleOnChange: (value: FieldsValue) => {
+        dispatch({
+          type: 'set-field-value',
+          payload: { path: props.path, fieldValue: value },
+        });
+      },
+    }) as CustomValueEditorProps;
 
   return (
     <div
@@ -74,11 +100,11 @@ export const Rule = (props: RuleProps) => {
       </select>
 
       {/*Rule Operator*/}
-      <Show
-        when={config().controlElements?.customOperators?.() === null}
-        fallback={config().controlElements?.customOperators?.()}
-      >
-        <Show when={props.rule.field !== null}>
+      <Show when={props.rule.field !== null}>
+        <Show
+          when={config().controlElements?.customOperators?.(currentFieldData()) === null}
+          fallback={config().controlElements?.customOperators?.(currentFieldData())}
+        >
           <select
             name="operators"
             id="operators"
@@ -104,45 +130,29 @@ export const Rule = (props: RuleProps) => {
       </Show>
 
       {/*Rule fieldValue*/}
-      <Show
-        when={config().controlElements?.customValueEditor?.() === null}
-        fallback={config().controlElements?.customValueEditor?.()}
-      >
-        <Show when={props.rule.field !== null && props.rule.operator !== null}>
+      <Show when={props.rule.field !== null && props.rule.operator !== null}>
+        <Show
+          when={config().controlElements?.customValueEditor?.(customValueEditorProp()) === null}
+          fallback={config().controlElements?.customValueEditor?.(customValueEditorProp())}
+        >
           <ValueEditor
-            disabled={config().disabled || false}
-            fieldData={
-              props.rule.field !== null
-                ? getFieldFromName(props.rule.field, config().fields)
-                : undefined
-            }
+            disabled={config().disabled}
+            fieldData={currentFieldData()}
+            inputType={currentFieldData()?.inputType}
+            listsAsArrays={currentFieldData()?.listAsArrays}
+            operator={props.rule.operator ?? ''}
+            separator={currentFieldData()?.separator}
+            title={currentFieldData()?.title}
+            valueEditorType={currentFieldData()?.valueEditorType}
+            values={currentFieldData()?.values ?? []}
+            value={props.rule.fieldValue}
+            selectorComponent={ValueSelector}
             handleOnChange={(value: FieldsValue) => {
               dispatch({
-                type: 'set-fieldValue',
+                type: 'set-field-value',
                 payload: { path: props.path, fieldValue: value },
               });
             }}
-            inputType={
-              props.rule.field
-                ? getFieldFromName(props.rule.field, config().fields)?.inputType
-                : 'text'
-            }
-            listsAsArrays={config().fields.find(f => f.name === props.rule.field)?.listAsArrays}
-            operator={props.rule.operator !== null ? props.rule.operator : ''}
-            separator={
-              props.rule.field
-                ? getFieldFromName(props.rule.field, config().fields)?.separator
-                : ','
-            }
-            title={config().fields.find(f => f.name === props.rule.field)?.title}
-            valueEditorType={
-              props.rule.field !== null
-                ? getFieldFromName(props.rule.field, config().fields)?.valueEditorType
-                : 'text'
-            }
-            values={config().fields.find(f => f.name === props.rule.field)?.values ?? []}
-            value={props.rule.fieldValue}
-            selectorComponent={null}
           />
         </Show>
       </Show>

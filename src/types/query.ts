@@ -4,6 +4,7 @@ import type { RuleGroupType } from './rule-group';
 import type { Fields } from './fields';
 import type { OperatorsList } from './operators';
 import type { JSX } from 'solid-js/jsx-runtime';
+import type { CustomValueEditorProps } from './fieldsValue';
 
 export type Query = RuleGroupType;
 
@@ -33,7 +34,7 @@ export type QueryBuilderConfig = {
   getOperators?: (field: string, misc: { fieldsData: Fields }) => OperatorsList | null;
   /** if provided will override the default components */
   controlElements?: {
-    customOperators?: () => JSX.Element;
-    customValueEditor?: () => JSX.Element;
+    customOperators?: (field: Fields | undefined) => JSX.Element;
+    customValueEditor?: (props: CustomValueEditorProps) => JSX.Element;
   };
 };
