@@ -140,6 +140,17 @@ export const Rule = (props: RuleProps) => {
       aria-disabled={config().disabled || props.parentLocked || props.rule.locked}
       data-disabled={config().disabled || props.parentLocked || props.rule.locked}
     >
+      {/*Rule Actions*/}
+      <Show when={config().showShiftActions} fallback={null}>
+        <ShiftActions
+          path={props.path}
+          shiftUpDisabled={props.parentLocked || props.rule.locked || props.shiftUpDisabled}
+          shiftDownDisabled={props.parentLocked || props.rule.locked || props.shiftDownDisabled}
+        />
+      </Show>
+      <Show when={config().allowDragAndDrop} fallback={null}>
+        <DragHandle dragActivators={draggable.dragActivators} />
+      </Show>
       {/*Rule Fields*/}
       <select
         name="fields"
@@ -216,18 +227,6 @@ export const Rule = (props: RuleProps) => {
           />
         </Show>
       </Show>
-      {/*Rule Actions*/}
-      <Show when={config().showShiftActions} fallback={null}>
-        <ShiftActions
-          path={props.path}
-          shiftUpDisabled={props.parentLocked || props.rule.locked || props.shiftUpDisabled}
-          shiftDownDisabled={props.parentLocked || props.rule.locked || props.shiftDownDisabled}
-        />
-      </Show>
-      <Show when={config().allowDragAndDrop} fallback={null}>
-        <DragHandle dragActivators={draggable.dragActivators} />
-      </Show>
-      Rule: {props.path} ==== {JSON.stringify(props.rule.id)}
       <Show when={config().showNotToggle === 'both' || config().showNotToggle === 'rule'}>
         <label>
           <input
