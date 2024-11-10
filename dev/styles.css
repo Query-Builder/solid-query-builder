@@ -3,9 +3,11 @@
 *::before {
   margin: 0;
   padding: 0;
+  color: #111827;
 }
 
 body {
+  background-color: #f5f5f5;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -17,9 +19,70 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.main {
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  row-gap: 20px;
+}
+
+.header {
+  margin: 16px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 16px;
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #bcc2ce;
+}
+
+h1 {
+  color: #171717;
+}
+
+h2 {
+  color: #262626;
+}
+
+.right-header {
   display: flex;
   column-gap: 20px;
+}
+
+.github-logo {
+  height: 30px;
+  aspect-ratio: 1;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  margin: 24px;
+  margin-top: 0;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.intro-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  margin-left: 36px;
+}
+
+.demo {
+  border: 1px solid #bcc2ce;
+  padding: 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
 }
 
 .left__section {
@@ -29,6 +92,62 @@ code {
   border: 1px solid black;
   padding: 10px;
   border-radius: 5px;
+}
+
+.right__section {
+  width: 100%;
+}
+
+.installation {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 600px;
+  /* align-items: center; */
+}
+
+.or-container {
+  align-self: center;
+}
+
+.pre {
+  width: 90%;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background-color: #27272a;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  position: relative;
+}
+
+.pre code {
+  color: #f8f8f2;
+  flex: 1;
+}
+
+.copy-icon {
+  height: 20px;
+  aspect-ratio: 1;
+  filter: invert(1);
+}
+
+.copy-button {
+  position: absolute;
+  right: 20px;
+  background-color: #27272a;
+  color: #f8f8f2;
+  border: none;
+  border-radius: 8px;
+  padding: 4px;
+  cursor: pointer;
+  opacity: 0;
+  width: max-content;
+}
+
+.pre:hover .copy-button {
+  opacity: 1;
+  border: 1px solid #f8f8f2;
 }
 
 .label {
