@@ -1,5 +1,5 @@
 {
-  "name": "solid-query-builder",
+  "name": "@query-builder/solid-query-builder",
   "version": "0.0.0",
   "description": "Customizable SolidJS based Query Builder",
   "license": "MIT",
@@ -22,8 +22,12 @@
   "bugs": {
     "url": "https://github.com/Query-Builder/solid-query-builder/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "private": false,
   "sideEffects": false,
@@ -57,6 +61,7 @@
   "scripts": {
     "dev": "vite serve dev",
     "build": "tsup",
+    "build:docs": "cd dev && vite build",
     "test": "concurrently pnpm:test:*",
     "test:client": "vitest",
     "test:ssr": "pnpm run test:client --mode ssr",
