@@ -1,0 +1,40 @@
+name: Deploy Dev to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+
+    # Step 3: Install pnpm
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    # Step 4: Install dependencies
+    - name: Install dependencies
+      run: pnpm install
+
+    # Step 5: Build the dev folder
+    - name: Build Dev Folder
+      run: pnpm run build:dev
+
+    # Step 6: Deploy demo to GitHub Pages
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dev/dist
