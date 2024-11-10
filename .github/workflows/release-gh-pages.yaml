@@ -30,7 +30,7 @@ jobs:
 
     # Step 5: Build the dev folder
     - name: Build Dev Folder
-      run: pnpm run build:dev
+      run: pnpm run build:docs
 
     # Step 6: Deploy demo to GitHub Pages
     - name: Deploy to GitHub Pages
