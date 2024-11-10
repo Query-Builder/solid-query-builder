@@ -228,8 +228,9 @@ export const Rule = (props: RuleProps) => {
         </Show>
       </Show>
       <Show when={config().showNotToggle === 'both' || config().showNotToggle === 'rule'}>
-        <label>
+        <label class="not-rule-toggle-label">
           <input
+            class='not-rule-toggle'
             type="checkbox"
             name="not-rule-group"
             checked={props.rule.not}
@@ -247,16 +248,17 @@ export const Rule = (props: RuleProps) => {
       >
         Lock
       </button>
+      {currentFieldData()?.name}
       <button
         data-testid="delete-rule-button"
         class="delete-button"
         disabled={config().disabled || props.parentLocked || props.rule.locked}
         onClick={() => dispatch({ type: 'delete-rule', payload: { path: props.path } })}
       >
-        Delete
+        Delete {}
       </button>
       <DragOverlay>
-        <div class="drag-overlay">{props.rule.field}</div>
+        <div class="drag-overlay">{currentFieldData()?.name}</div>
       </DragOverlay>
     </div>
   );
