@@ -1,6 +1,6 @@
 {
   "name": "@query-builder/solid-query-builder",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "description": "Customizable SolidJS based Query Builder",
   "license": "MIT",
   "author": "Swapnesh Sangle",
