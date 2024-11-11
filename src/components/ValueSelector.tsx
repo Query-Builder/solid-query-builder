@@ -14,6 +14,7 @@ interface ValueSelectorProps {
 const ValueSelector: Component<ValueSelectorProps> = props => {
   return (
     <select
+      name="input-select"
       title={props.title}
       value={props.value}
       onChange={props.handleOnChange}

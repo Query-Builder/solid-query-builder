@@ -28,7 +28,11 @@ export const ThemeToggle = () => {
 
   return (
     <div>
-      <button onClick={toggleTheme} class="theme-btn">
+      <button
+        onClick={toggleTheme}
+        class="theme-btn"
+        aria-label={`Switch to ${theme() === 'light' ? 'dark' : 'light'} mode`}
+      >
         {theme() !== 'light' ? (
           <svg
             viewBox="0 0 24 24"

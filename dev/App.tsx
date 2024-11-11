@@ -73,52 +73,60 @@ const App: Component = () => {
         <h3>Demo</h3>
         <section class="demo">
           <section class="override">
-            <div>Override:</div>
-            <div class="options">
-              <label class="label">
-                <input
-                  type="checkbox"
-                  checked={disableQB()}
-                  onChange={() => setDisableQB(!disableQB())}
-                />
-                Disable Query Builder
-              </label>
-              <label class="label">
-                <input
-                  type="checkbox"
-                  checked={showShiftActions()}
-                  onChange={() => setShowShiftActions(!showShiftActions())}
-                />
-                Show Shift Actions
-              </label>
-              <label class="label">
-                <input
-                  type="checkbox"
-                  checked={allowDragAndDrop()}
-                  onChange={() => setAllowDragAndDrop(!allowDragAndDrop())}
-                />
-                Allow Drag and Drop
-              </label>
-              <label class="label">
-                <input
-                  type="checkbox"
-                  checked={addSingleRuleToGroup()}
-                  onChange={() => setAddSingleRuleToGroup(!addSingleRuleToGroup())}
-                />
-                Add Single Rule to Group
-              </label>
-              <select
-                value={showNotToggle()}
-                onChange={event => {
-                  setShowNotToggle(event?.target.value as Not_Selection);
-                }}
-              >
-                <option value="both">Show Not Toggle - Both</option>
-                <option value="rule">Show Not Toggle - Rule</option>
-                <option value="rule_group">Show Not Toggle - Group</option>
-                <option value="none">Show Not Toggle - None</option>
-              </select>
-            </div>
+            <details open={false}>
+              <summary>Override Props</summary>
+              <div class="options">
+                <label class="label">
+                  <input
+                    name="disable-qb"
+                    type="checkbox"
+                    checked={disableQB()}
+                    onChange={() => setDisableQB(!disableQB())}
+                  />
+                  Disable Query Builder
+                </label>
+                <label class="label">
+                  <input
+                    name="toggle-shift-actions"
+                    type="checkbox"
+                    checked={showShiftActions()}
+                    onChange={() => setShowShiftActions(!showShiftActions())}
+                  />
+                  Show Shift Actions
+                </label>
+                <label class="label">
+                  <input
+                    name="toggle-drag-drop"
+                    type="checkbox"
+                    checked={allowDragAndDrop()}
+                    onChange={() => setAllowDragAndDrop(!allowDragAndDrop())}
+                  />
+                  Allow Drag and Drop
+                </label>
+                <label class="label">
+                  <input
+                    name="toggle-single-rule"
+                    type="checkbox"
+                    checked={addSingleRuleToGroup()}
+                    onChange={() => setAddSingleRuleToGroup(!addSingleRuleToGroup())}
+                  />
+                  Add Single Rule to Group
+                </label>
+                <select
+                  name="show-not-toggle"
+                  value={showNotToggle()}
+                  onChange={event => {
+                    setShowNotToggle(event?.target.value as Not_Selection);
+                  }}
+                >
+                  <option value="both">Show Not Toggle - Both</option>
+                  <option value="rule">Show Not Toggle - Rule</option>
+                  <option value="rule_group">Show Not Toggle - Group</option>
+                  <option value="none">Show Not Toggle - None</option>
+                </select>
+              </div>
+            </details>
+            <hr />
           </section>
           <section class="right__section">
             <QueryBuilder
@@ -133,7 +141,8 @@ const App: Component = () => {
             />
           </section>
         </section>
-        <section class="installation">
+        <hr />
+        <section class="installation-section">
           <section>
             <h3>Installation:</h3>
             <div class="installation">
@@ -178,30 +187,38 @@ const App: Component = () => {
               </pre>
             </div>
           </section>
+          <hr />
           <section>
             <h5>Import:</h5>
-            <pre class="pre">
-              <code>
-                import &#123; QueryBuilder &#125; from '@query-builder/solid-query-builder';
-              </code>
-              <button
-                class="copy-button"
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    `import { QueryBuilder } from '@query-builder/solid-query-builder`,
-                  )
-                }
-              >
-                <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
-              </button>
-            </pre>
-            <h6>Optional Import: (default styling)</h6>
-            <pre class="pre">
-              <code>import '@query-builder/solid-query-builder/dist/index.css';</code>
-              <button
-                class="copy-button"
-                onClick={() =>
-                  navigator.clipboard.writeText(`<QueryBuilder
+            <div class="import">
+              <pre class="pre">
+                <code>
+                  import &#123; QueryBuilder &#125; from '@query-builder/solid-query-builder';
+                </code>
+                <button
+                  class="copy-button"
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      `import { QueryBuilder } from '@query-builder/solid-query-builder`,
+                    )
+                  }
+                >
+                  <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
+                </button>
+              </pre>
+            </div>
+          </section>
+          <hr />
+          <section>
+            <details>
+              <summary>Optional Import: (default styling)</summary>
+              <div class="import">
+                <pre class="pre">
+                  <code>import '@query-builder/solid-query-builder/dist/index.css';</code>
+                  <button
+                    class="copy-button"
+                    onClick={() =>
+                      navigator.clipboard.writeText(`<QueryBuilder
   initialQuery={MOCK_QUERY_DATA}
   fields={FIELDSDATA}
   operators={OPERATORS_DATA}
@@ -211,17 +228,23 @@ const App: Component = () => {
   addSingleRuleToGroup={false}
   showNotToggle="both"
 />`)
-                }
-              >
-                <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
-              </button>
-            </pre>
+                    }
+                  >
+                    <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
+                  </button>
+                </pre>
+              </div>
+            </details>
           </section>
+          <hr />
           <section>
-            <h5>Usage:</h5>
-            <pre class="pre">
-              <code>
-                {`<QueryBuilder
+            <details>
+              <summary>
+                <h5>Usage: App.tsx</h5>
+              </summary>
+              <pre class="pre">
+                <code>
+                  {`<QueryBuilder
   initialQuery={MOCK_QUERY_DATA}
   fields={FIELDSDATA}
   operators={OPERATORS_DATA}
@@ -231,25 +254,60 @@ const App: Component = () => {
   addSingleRuleToGroup={false}
   showNotToggle="both"
 />`}
-              </code>
-            </pre>
-            <h5>JSON Data:</h5>
-            <pre class="pre">
-              <code>{JSON.stringify(MOCK_QUERY_DATA, null, 2)}</code>
-            </pre>
+                </code>
+              </pre>
+            </details>
           </section>
+          <hr />
+          <section>
+            <details>
+              <summary>
+                <h5>JSON Data:</h5>
+              </summary>
+              <pre class="pre">
+                <code>{JSON.stringify(MOCK_QUERY_DATA, null, 2)}</code>
+              </pre>
+            </details>
+          </section>
+          <hr />
         </section>
         <section>
-          <h5>Planned Future Updates:</h5>
-          <ul class='list'>
+          <h5>Todo/Future Updates:</h5>
+          <ul class="list">
             <li>
-              Improved Drag and Drop support for both rule and groups.
+              <label>
+                <input name="todo-1" type="checkbox" readOnly disabled />
+                Improved Drag and Drop support for both rule and groups.
+              </label>
             </li>
             <li>
-              Ability to override the default components like Add Rule button.
+              <label>
+                <input name="todo-2" type="checkbox" readOnly disabled />
+                Ability to override control elements like Add, Clone, Delete buttons, etc.
+              </label>
             </li>
             <li>
-              More parsing options for the JSON output like SQL, MongoDB, etc.
+              <label>
+                <input name="todo-3" type="checkbox" readOnly disabled />
+                More parsing options for the JSON output like SQL, MongoDB, etc.
+              </label>
+            </li>
+            <li>
+              <label>
+                <input name="todo-4" type="checkbox" readOnly disabled />
+                Better documentation
+              </label>
+            </li>
+            <li>
+              and many more.. Create an PR/Issues in our{' '}
+              <a
+                href="https://github.com/Query-Builder/solid-query-builder"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Github Repository
+              </a>{' '}
+              to provide more usecases, so we can plan those accordingly.
             </li>
           </ul>
         </section>

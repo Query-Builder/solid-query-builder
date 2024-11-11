@@ -41,6 +41,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
       if (valueEditorType === 'text') {
         return (
           <input
+            name="input-text"
             type={inputTypeCoerced}
             placeholder={placeHolderText}
             value={value}
@@ -88,6 +89,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
     case 'textarea':
       return (
         <textarea
+          name="input-textarea"
           placeholder={placeHolderText}
           value={value}
           title={title}
@@ -100,6 +102,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
     case 'checkbox':
       return (
         <input
+          name="input-checkbox"
           type="checkbox"
           title={title}
           onChange={e => handleOnChange(e.target.checked)}
@@ -114,6 +117,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
           {values.map((v: any) => (
             <label>
               <input
+                name="input-radio"
                 type="radio"
                 value={v.name}
                 disabled={isDisabled()}
@@ -129,6 +133,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
 
   return (
     <input
+      name="input-text"
       type={inputTypeCoerced}
       placeholder={placeHolderText}
       value={value}
