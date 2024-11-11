@@ -18,8 +18,8 @@ type ValueEditorType =
 
 export type FieldsEditorProps = {
   title?: string;
+  isDisabled: () => boolean | undefined;
   handleOnChange: (value: FieldsValue) => void;
-  disabled?: boolean;
   value: any;
   values?: any;
   valueEditorType?: ValueEditorType;

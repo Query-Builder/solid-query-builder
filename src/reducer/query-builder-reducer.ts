@@ -201,7 +201,7 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
       const targetRule = findRuleByPath(draftState, targetPath);
 
       if (targetRule) {
-        targetRule.field = action.payload.field.name;
+        targetRule.field = action.payload.field !== null ? action.payload.field.name : null;
       }
       return draftState;
     }
@@ -210,7 +210,8 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
       const targetRule = findRuleByPath(draftState, targetPath);
 
       if (targetRule) {
-        targetRule.operator = action.payload.operator.label;
+        targetRule.operator =
+          action.payload.operator !== null ? action.payload.operator.label : null;
       }
 
       return draftState;

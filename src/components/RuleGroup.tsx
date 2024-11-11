@@ -28,6 +28,9 @@ export const RuleGroup = (props: RuleGroupProps) => {
       data-path={JSON.stringify(props.path)}
       aria-disabled={config().disabled || props.query.locked}
       data-locked={props.query.locked}
+      role="none"
+      aria-label="Rule group container"
+      aria-description={`This is a rule group container with path ${JSON.stringify(props.path)}`}
     >
       <RuleGroupHeader
         parentLocked={props.parentLocked}
