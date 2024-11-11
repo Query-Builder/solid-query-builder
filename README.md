@@ -1,6 +1,17 @@
 # SolidJS Query Builder
 
-Customizable SolidJS based Query Builder
+## Query Builder is an UI component to create complex queries and filters
+
+### Supported features out of the box
+
+- Customizable: Query Builder with default options that can be customized.
+- Nested Groups and Rules: Supports creating nested groups and rules.
+- Operations: Add, clone, delete, shift, and more operations on rules and groups.
+- Styling: Tweak default styles or provide custom styles for the Query Builder.
+- JSON Output: Outputs structured JSON of rules and groups for creating complex queries.
+- Accessibility: Keyboard navigation and screen reader support.
+- Drag and Drop: Reorder groups and rules with drag and drop support.
+- Custom Operators and Editors: Supports custom operators and value editors.
 
 ## Quick start
 
