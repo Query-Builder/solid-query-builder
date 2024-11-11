@@ -43,4 +43,6 @@ export type QueryBuilderConfig = {
   allowDragAndDrop?: boolean;
   /** If provided, it will allow add an single rule to new group, else it will be an empty group */
   addSingleRuleToGroup?: boolean;
+  /** If provided, it will show default styled branches */
+  showBranches?: boolean;
 };
