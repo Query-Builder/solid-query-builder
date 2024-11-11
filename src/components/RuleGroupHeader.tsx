@@ -102,9 +102,6 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       >
         Lock
       </button>
-      <span>
-        Group - {props.path} ==== {props.query.id}
-      </span>
     </div>
   );
 };

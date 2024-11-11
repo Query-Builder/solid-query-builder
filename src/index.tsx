@@ -8,6 +8,12 @@ import './styles.css';
 // all types
 export * from './types';
 
+// Default Operators
+export { defaultOperators } from './constants';
+
+// format Query
+export { formatQuery } from './formatQuery';
+
 type QueryBuilderProps = QueryBuilderConfig;
 
 export const QueryBuilder = (props: QueryBuilderProps) => {

@@ -11,7 +11,7 @@ const getFirstOption = (arr: Option) => {
 
 export const ValueEditor = (allProps: FieldsEditorProps) => {
   const {
-    disabled = false,
+    isDisabled,
     fieldData,
     handleOnChange,
     inputType = 'text',
@@ -44,7 +44,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
             type={inputTypeCoerced}
             placeholder={placeHolderText}
             value={value}
-            disabled={disabled}
+            disabled={isDisabled()}
             onChange={e => e.target.value}
           />
         );
@@ -53,7 +53,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
         <SelectorComponent
           {...propsForValueSelector}
           handleOnChange={(v: any) => v.target.value}
-          disabled={disabled}
+          disabled={isDisabled()}
           value={value ?? getFirstOption(values)}
           options={values}
           listsAsArrays={listsAsArrays}
@@ -77,7 +77,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
           {...propsForValueSelector}
           title={title}
           handleOnChange={handleOnChange}
-          disabled={disabled}
+          disabled={isDisabled()}
           value={value}
           options={values}
           multiple={valueEditorType === 'multiselect'}
@@ -91,7 +91,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
           placeholder={placeHolderText}
           value={value}
           title={title}
-          disabled={disabled}
+          disabled={isDisabled()}
           onChange={e => handleOnChange(e.target.value)}
         />
       );
@@ -104,7 +104,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
           title={title}
           onChange={e => handleOnChange(e.target.checked)}
           checked={!!value}
-          disabled={disabled}
+          disabled={isDisabled()}
         />
       );
 
@@ -116,7 +116,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
               <input
                 type="radio"
                 value={v.name}
-                disabled={disabled}
+                disabled={isDisabled()}
                 checked={value === v.name}
                 onChange={e => handleOnChange(e.target.value)}
               />
@@ -133,7 +133,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
       placeholder={placeHolderText}
       value={value}
       title={title}
-      disabled={disabled}
+      disabled={isDisabled()}
       onChange={e => handleOnChange(e.target.value)}
     />
   );
