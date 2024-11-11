@@ -236,16 +236,7 @@ const App: Component = () => {
                   <button
                     class="copy-button"
                     onClick={() =>
-                      navigator.clipboard.writeText(`<QueryBuilder
-  initialQuery={MOCK_QUERY_DATA}
-  fields={FIELDSDATA}
-  operators={OPERATORS_DATA}
-  showShiftActions
-  allowDragAndDrop
-  disabled={false}
-  addSingleRuleToGroup={false}
-  showNotToggle="both"
-/>`)
+                      navigator.clipboard.writeText(`import '@query-builder/solid-query-builder/dist/index.css'`)
                     }
                   >
                     <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
@@ -263,7 +254,7 @@ const App: Component = () => {
               <pre class="pre">
                 <code>
                   {`<QueryBuilder
-  initialQuery={MOCK_QUERY_DATA}
+  initialQuery={QUERY_DATA}
   fields={FIELDSDATA}
   operators={OPERATORS_DATA}
   showShiftActions
