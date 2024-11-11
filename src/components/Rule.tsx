@@ -62,6 +62,8 @@ const getOperatorsFromField = (
 export const Rule = (props: RuleProps) => {
   const { dispatch, config } = useQueryBuilderContext();
 
+  const isDisabled = () => config().disabled || props.parentLocked || props.rule.locked;
+
   const [ruleOperators, setRuleOperators] = createSignal<OperatorsList | null>(null);
 
   const draggable = createDraggable(props.rule.id, { rule: props.rule, path: props.path });
@@ -89,6 +91,13 @@ export const Rule = (props: RuleProps) => {
       setRuleOperators(
         getOperatorsFromField(props.rule.field, config().operators, config().fields),
       );
+    }
+
+    /* To make field, operator and field value as null if the field does not exist in Fields Data */
+    if (getFieldFromName(props.rule.field, config().fields) === undefined) {
+      dispatch({ type: 'set-field', payload: { path: props.path, field: null } });
+      dispatch({ type: 'set-operator', payload: { path: props.path, operator: null } });
+      dispatch({ type: 'set-field-value', payload: { path: props.path, fieldValue: null } });
     }
   });
 
@@ -137,8 +146,11 @@ export const Rule = (props: RuleProps) => {
       data-level={props.path.length}
       data-path={JSON.stringify(props.path)}
       data-rule-id={props.rule.id}
-      aria-disabled={config().disabled || props.parentLocked || props.rule.locked}
-      data-disabled={config().disabled || props.parentLocked || props.rule.locked}
+      aria-disabled={isDisabled()}
+      data-disabled={isDisabled()}
+      role="none"
+      aria-label="Rule Container"
+      aria-description={`This is a rule container with path ${JSON.stringify(props.path)}`}
     >
       {/*Rule Actions*/}
       <Show when={config().showShiftActions} fallback={null}>
@@ -155,6 +167,7 @@ export const Rule = (props: RuleProps) => {
       <select
         name="fields"
         id="fields"
+        disabled={isDisabled()}
         onChange={e => {
           const field = config().fields.find((f: Fields) => f.name === e.target.value);
           if (field) {
@@ -180,6 +193,7 @@ export const Rule = (props: RuleProps) => {
           <select
             name="operators"
             id="operators"
+            disabled={isDisabled()}
             onChange={e => {
               if (ruleOperators()) {
                 const operator = ruleOperators()?.find(f => f.value === e.target.value);
@@ -207,7 +221,7 @@ export const Rule = (props: RuleProps) => {
           fallback={config().controlElements.customValueEditor?.(customValueEditorProp())}
         >
           <ValueEditor
-            disabled={config().disabled}
+            isDisabled={() => isDisabled()}
             fieldData={currentFieldData()}
             inputType={currentFieldData()?.inputType}
             listsAsArrays={currentFieldData()?.listAsArrays}
@@ -233,7 +247,7 @@ export const Rule = (props: RuleProps) => {
             type="checkbox"
             name="not-rule-group"
             checked={props.rule.not}
-            disabled={config().disabled || props.parentLocked || props.rule.locked}
+            disabled={isDisabled()}
             onChange={() => dispatch({ type: 'negate-rule', payload: { path: props.path } })}
           />
           Not
@@ -250,7 +264,7 @@ export const Rule = (props: RuleProps) => {
       <button
         data-testid="delete-rule-button"
         class="delete-button"
-        disabled={config().disabled || props.parentLocked || props.rule.locked}
+        disabled={isDisabled()}
         onClick={() => dispatch({ type: 'delete-rule', payload: { path: props.path } })}
       >
         Delete

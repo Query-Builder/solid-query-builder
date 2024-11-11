@@ -67,7 +67,7 @@ type Change_Field = {
   type: 'set-field';
   payload: {
     path: Path;
-    field: Fields;
+    field: Fields | null;
   };
 };
 
@@ -75,7 +75,7 @@ type Change_Operator = {
   type: 'set-operator';
   payload: {
     path: Path;
-    operator: Operators;
+    operator: Operators | null;
   };
 };
 
@@ -83,7 +83,7 @@ type Change_Field_Value = {
   type: 'set-field-value';
   payload: {
     path: Path;
-    fieldValue: FieldsValue;
+    fieldValue: FieldsValue | null;
   };
 };
 

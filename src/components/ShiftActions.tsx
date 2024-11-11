@@ -21,6 +21,8 @@ export const ShiftActions = (props: ShiftActionsProps) => {
             payload: { path: props.path },
           })
         }
+        aria-label="shift-up button"
+        aria-description="This button will shift the current rule up"
       >
         &#8743;
       </button>
@@ -33,6 +35,8 @@ export const ShiftActions = (props: ShiftActionsProps) => {
             payload: { path: props.path },
           })
         }
+        aria-label="shift-down button"
+        aria-description="This button will shift the current rule down"
       >
         &#8744;
       </button>

@@ -13,7 +13,12 @@ interface ValueSelectorProps {
 
 const ValueSelector: Component<ValueSelectorProps> = props => {
   return (
-    <select title={props.title} value={props.value} onChange={props.handleOnChange}>
+    <select
+      title={props.title}
+      value={props.value}
+      onChange={props.handleOnChange}
+      disabled={props.disabled}
+    >
       <Show when={!props.value}>
         <option>----</option>
       </Show>
