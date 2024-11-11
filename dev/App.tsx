@@ -1,4 +1,4 @@
-import { createSignal, type Component } from 'solid-js';
+import { createSignal, type Component, createResource, Show } from 'solid-js';
 
 // query builder lib import
 import { QueryBuilder, type Not_Selection } from 'src';
@@ -8,7 +8,20 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { MOCK_QUERY_DATA } from './mock-query-data';
 import { FIELDSDATA, OPERATORS_DATA } from './mock-rule-data';
 
+const fetchPackageVersion = () => {
+  return fetch(`https://registry.npmjs.org/@query-builder/solid-query-builder/latest`).then(
+    response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch package data');
+      }
+      return response.json();
+    },
+  );
+};
+
 const App: Component = () => {
+  const [packageVersion] = createResource(fetchPackageVersion);
+
   const [disableQB, setDisableQB] = createSignal(false);
   const [showShiftActions, setShowShiftActions] = createSignal(true);
   const [allowDragAndDrop, setAllowDragAndDrop] = createSignal(true);
@@ -20,6 +33,11 @@ const App: Component = () => {
       <header class="header">
         <h1>SolidJS Query Builder</h1>
         <div class="right-header">
+          <div>
+            <Show when={packageVersion()} fallback={<div aria-busy="true"></div>}>
+              <div>Version: {packageVersion()?.version ?? '- -'}</div>
+            </Show>
+          </div>
           <ThemeToggle />
           <a
             href="https://github.com/Query-Builder/solid-query-builder"
@@ -308,6 +326,29 @@ const App: Component = () => {
                 Github Repository
               </a>{' '}
               to provide more usecases, so we can plan those accordingly.
+            </li>
+          </ul>
+        </section>
+        <section class="links">
+          <h4>Links:</h4>
+          <ul class="list">
+            <li>
+              <a
+                href="https://github.com/Query-Builder/solid-query-builder"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Github Repo
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.npmjs.com/package/@query-builder/solid-query-builder"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                NPM Package
+              </a>
             </li>
           </ul>
         </section>
