@@ -38,7 +38,7 @@ const App: Component = () => {
         <section class="intro">
           <h3>Query Builder is an UI component to create complex queries and filters</h3>
           <h4>Supported features out of the box:</h4>
-          <ul class="intro-list">
+          <ul class="list">
             <li>
               <strong>Customizable:</strong> Query Builder with default options that can be
               customized.
@@ -187,7 +187,9 @@ const App: Component = () => {
               <button
                 class="copy-button"
                 onClick={() =>
-                  navigator.clipboard.writeText('npm install @query-builder/solid-query-builder')
+                  navigator.clipboard.writeText(
+                    `import { QueryBuilder } from '@query-builder/solid-query-builder`,
+                  )
                 }
               >
                 <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
@@ -199,7 +201,16 @@ const App: Component = () => {
               <button
                 class="copy-button"
                 onClick={() =>
-                  navigator.clipboard.writeText('npm install @query-builder/solid-query-builder')
+                  navigator.clipboard.writeText(`<QueryBuilder
+  initialQuery={MOCK_QUERY_DATA}
+  fields={FIELDSDATA}
+  operators={OPERATORS_DATA}
+  showShiftActions
+  allowDragAndDrop
+  disabled={false}
+  addSingleRuleToGroup={false}
+  showNotToggle="both"
+/>`)
                 }
               >
                 <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
@@ -227,6 +238,34 @@ const App: Component = () => {
               <code>{JSON.stringify(MOCK_QUERY_DATA, null, 2)}</code>
             </pre>
           </section>
+        </section>
+        <section>
+          <h5>Planned Future Updates:</h5>
+          <ul class='list'>
+            <li>
+              Improved Drag and Drop support for both rule and groups.
+            </li>
+            <li>
+              Ability to override the default components like Add Rule button.
+            </li>
+            <li>
+              More parsing options for the JSON output like SQL, MongoDB, etc.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h5>Inspiration:</h5>
+          <p>
+            This project is inspired by the{' '}
+            <a href="https://react-querybuilder.js.org/" target="_blank" rel="noopener noreferrer">
+              React Query Builder
+            </a>{' '}
+            and the{' '}
+            <a href="https://querybuilder.js.org/" target="_blank" rel="noopener noreferrer">
+              JQuery Query Builder
+            </a>{' '}
+            library.
+          </p>
         </section>
       </main>
       <footer class="footer">

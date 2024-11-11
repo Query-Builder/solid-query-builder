@@ -61,7 +61,7 @@ html[data-theme='dark'] .github-logo {
   row-gap: 15px;
 }
 
-.intro-list {
+.list {
   display: flex;
   flex-direction: column;
   row-gap: 3px;
