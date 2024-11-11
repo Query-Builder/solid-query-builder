@@ -4,6 +4,8 @@
 
 ### Supported features out of the box
 
+![Query Builder Sample](sample_screenshot.png)
+
 - Customizable: Query Builder with default options that can be customized.
 - Nested Groups and Rules: Supports creating nested groups and rules.
 - Operations: Add, clone, delete, shift, and more operations on rules and groups.
