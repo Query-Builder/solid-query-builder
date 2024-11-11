@@ -8,13 +8,13 @@ export const MOCK_QUERY_DATA: Query = {
   rules: [
     {
       id: uuidv4(),
-      field: 'XYZ-1',
+      field: 'First Name',
       fieldValue: 'ABC-1',
       operator: '=',
     },
     {
       id: uuidv4(),
-      field: 'XYZ-2',
+      field: 'Last Name',
       fieldValue: 'ABC-2',
       operator: '=',
     },
@@ -24,15 +24,21 @@ export const MOCK_QUERY_DATA: Query = {
       rules: [
         {
           id: uuidv4(),
-          field: 'XYZ-3',
+          field: 'Age',
           fieldValue: 'ABC-3',
+          operator: '=',
+        },
+        {
+          id: uuidv4(),
+          field: 'Email',
+          fieldValue: 'john@doe.com',
           operator: '=',
         },
       ],
     },
     {
       id: uuidv4(),
-      field: 'XYZ-4',
+      field: 'Subscription',
       fieldValue: 'ABC-4',
       operator: '=',
     },

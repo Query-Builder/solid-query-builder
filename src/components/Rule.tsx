@@ -42,7 +42,7 @@ const combineRefs = <V,>(setRefA: RefSetter<V>, setRefB: RefSetter<V>): RefSette
 };
 
 const getFieldFromName = (field: string | null, fields: Fields[]) =>
-  field ? fields.find(f => f.name === field) : undefined;
+  fields.find(f => f.name === field);
 
 const getOperatorsFromField = (
   field: string,
@@ -166,8 +166,9 @@ export const Rule = (props: RuleProps) => {
       {/*Rule Fields*/}
       <select
         name="fields"
-        id="fields"
+        id={`fields-${props.rule.id}`}
         disabled={isDisabled()}
+        value={props.rule.field ?? ''}
         onChange={e => {
           const field = config().fields.find((f: Fields) => f.name === e.target.value);
           if (field) {
@@ -192,7 +193,7 @@ export const Rule = (props: RuleProps) => {
         >
           <select
             name="operators"
-            id="operators"
+            id={`operators-${props.rule.id}`}
             disabled={isDisabled()}
             onChange={e => {
               if (ruleOperators()) {
@@ -242,8 +243,9 @@ export const Rule = (props: RuleProps) => {
         </Show>
       </Show>
       <Show when={config().showNotToggle === 'both' || config().showNotToggle === 'rule'}>
-        <label>
+        <label class="not-rule-toggle-label">
           <input
+            class="not-rule-toggle"
             type="checkbox"
             name="not-rule-group"
             checked={props.rule.not}
@@ -270,7 +272,7 @@ export const Rule = (props: RuleProps) => {
         Delete
       </button>
       <DragOverlay>
-        <div class="drag-overlay">{props.rule.field}</div>
+        <div class="drag-overlay">{currentFieldData()?.name}</div>
       </DragOverlay>
     </div>
   );

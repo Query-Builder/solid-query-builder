@@ -14,6 +14,9 @@ export { defaultOperators } from './constants';
 // format Query
 export { formatQuery } from './formatQuery';
 
+// Value Editor
+export { ValueEditor } from './components';
+
 type QueryBuilderProps = QueryBuilderConfig;
 
 export const QueryBuilder = (props: QueryBuilderProps) => {
