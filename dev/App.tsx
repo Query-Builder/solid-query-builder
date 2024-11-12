@@ -1,7 +1,7 @@
-import { createSignal, type Component, createResource, Show } from 'solid-js';
+import { createSignal, type Component, createResource, Show, createEffect } from 'solid-js';
 
 // query builder lib import
-import { QueryBuilder, type Not_Selection } from 'src';
+import { QueryBuilder, type Not_Selection, type Query } from 'src';
 
 import { ThemeToggle } from './components/ThemeToggle';
 
@@ -21,6 +21,7 @@ const fetchPackageVersion = () => {
 
 const App: Component = () => {
   const [packageVersion] = createResource(fetchPackageVersion);
+  const [qbData, setQbData] = createSignal<Query>(MOCK_QUERY_DATA);
 
   const [disableQB, setDisableQB] = createSignal(false);
   const [showBranches, setShowBranches] = createSignal(true);
@@ -167,7 +168,19 @@ const App: Component = () => {
               addSingleRuleToGroup={addSingleRuleToGroup()}
               showNotToggle={showNotToggle()}
               showBranches={showBranches()}
+              onQueryChangeHandler={query => {
+                setQbData({ ...query });
+                console.log('Query', query);
+              }}
             />
+          </section>
+          <section>
+            <details>
+              <summary>Query Builder JSON Output (show more...)</summary>
+              <pre class="pre">
+                <code>{JSON.stringify(qbData(), null, 2)}</code>
+              </pre>
+            </details>
           </section>
         </section>
         <hr />

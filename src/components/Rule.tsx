@@ -263,6 +263,14 @@ export const Rule = (props: RuleProps) => {
         Lock
       </button>
       <button
+        data-testid="clone-rule-button"
+        class="clone-button"
+        disabled={config().disabled || props.parentLocked}
+        onClick={() => dispatch({ type: 'clone-rule', payload: { path: props.path } })}
+      >
+        Clone
+      </button>
+      <button
         data-testid="delete-rule-button"
         class="delete-button"
         disabled={isDisabled()}
