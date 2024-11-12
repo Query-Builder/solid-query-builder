@@ -247,7 +247,9 @@ const App: Component = () => {
                   <button
                     class="copy-button"
                     onClick={() =>
-                      navigator.clipboard.writeText(`import '@query-builder/solid-query-builder/dist/index.css'`)
+                      navigator.clipboard.writeText(
+                        `import '@query-builder/solid-query-builder/dist/index.css'`,
+                      )
                     }
                   >
                     <img src="./copy-icon-black.png" alt="copy icon" class="copy-icon" />
@@ -279,7 +281,7 @@ const App: Component = () => {
             </details>
           </section>
           <hr />
-          <section>
+          <section id="JSON-Data">
             <details>
               <summary>
                 <h5>JSON Data:</h5>
@@ -291,7 +293,389 @@ const App: Component = () => {
           </section>
           <hr />
         </section>
+        <section class="API reference">
+          <h4>API Reference:</h4>
+          <p>The Query Builder component accepts the following props.</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>initialQuery</td>
+                <td>
+                  <a href="#Query-section">Query</a>
+                </td>
+                <td>
+                  Initial query object to be displayed in the Query Builder. The query object should
+                  follow the <a href="#JSON-Data">Query object structure</a>. This prop is optional
+                  unless you want to display some initial query.
+                </td>
+              </tr>
+              <tr>
+                <td>fields</td>
+                <td>
+                  <a href="#Fields-section">Fields</a>
+                </td>
+                <td>
+                  Array of field objects. Each field object should have a name and label property.
+                  This prop is required.
+                </td>
+              </tr>
+              <tr>
+                <td>operators</td>
+                <td>
+                  <a href="#Operators-section">Operators</a>
+                </td>
+                <td>
+                  Array of operator objects. Each operator object should have a value and label
+                  property. Thi prop is optional.
+                </td>
+              </tr>
+              <tr>
+                <td>showShiftActions</td>
+                <td>boolean</td>
+                <td>
+                  Show shift actions like shift up and shift down. Default is <code>false</code>.
+                  This prop is optional.
+                </td>
+              </tr>
+              <tr>
+                <td>allowDragAndDrop</td>
+                <td>boolean</td>
+                <td>
+                  Allow drag and drop to reorder groups and rules. This prop is optional. Default is{' '}
+                  <code>false</code>.
+                </td>
+              </tr>
+              <tr>
+                <td>disabled</td>
+                <td>boolean</td>
+                <td>
+                  Disable the Query Builder. This prop is optional. Default is <code>false</code>.
+                </td>
+              </tr>
+              <tr>
+                <td>addSingleRuleToGroup</td>
+                <td>boolean</td>
+                <td>
+                  Add a single rule to a new group. This prop is optional. Default is{' '}
+                  <code>false</code>.
+                </td>
+              </tr>
+              <tr>
+                <td>showNotToggle</td>
+                <td>Not_Selection</td>
+                <td>
+                  Show the not toggle for rules and groups. This prop is optional. Default is{' '}
+                  <code>both</code>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="TypeScript Reference">
+          <h4>TypeScript Reference:</h4>
+          <p>
+            The Query Builder component is written in TypeScript and exports the following types.
+          </p>
+          <h5 id="Query-section">Query:</h5>
+          <pre class="pre">
+            <code>
+              {`type Query = {
+  id: string;
+  type: 'group' | 'rule';
+  rules?: Query[];
+  field?: string;
+  operator?: string;
+  value?: any;
+  not?: boolean;
+};`}
+            </code>
+          </pre>
+          <h5 id="Fields-section">Fields:</h5>
+          <pre class="pre">
+            <code>
+              {`type Fields = {
+  name: string;
+  label: string;
+  type?: string;
+  operators?: OperatorsList;
+  valueEditorType?: string;
+  inputType?: string;
+  values?: Option[];
+  defaultOperator?: string;
+  defaultValue?: any;
+  validator?: RuleValidator;
+  separator?: string;
+  title?: string;
+  listAsArrays?: boolean;
+  comparator?: string;
+};`}
+            </code>
+          </pre>
+          <h5 id="Operators-section">Operators:</h5>
+          <pre class="pre">
+            <code>
+              {`type Operators = {
+  name: string;
+  label: string;
+  inputType?: string;
+  values?: Option[];
+  defaultValue?: any;
+  comparator?: string;
+};`}
+            </code>
+          </pre>
+          <h5 class="Option-section">Option:</h5>
+          <pre class="pre">
+            <code>
+              {`type Option = {
+  value: string;
+  label: string;
+};`}
+            </code>
+          </pre>
+          <h5 class="ValueEditorType-section">ValueEditorType:</h5>
+          <pre class="pre">
+            <code>
+              {`type ValueEditorType = | 'text' | 'switch' | 'checkbox' | 'radio' | 'textarea' | 'select' | 'multiselect' | 'date' | 'datetime-local' | 'time' | null;`}
+            </code>
+          </pre>
+          <h5 class="FieldsEditorProps-section">FieldsEditorProps:</h5>
+          <pre class="pre">
+            <code>
+              {`type FieldsEditorProps = {
+  title?: string;
+  isDisabled: () => boolean | undefined;
+  handleOnChange: (value: FieldsValue) => void;
+  value: any;
+  values?: any;
+  valueEditorType?: ValueEditorType;
+  listsAsArrays?: boolean;
+  fieldData: Fields | undefined;
+  inputType?: InputType | undefined | null;
+  operator: string;
+  separator?: string;
+  selectorComponent: any;
+};`}
+            </code>
+          </pre>
+          <h5 id="CustomValueEditorProps-section">CustomValueEditorProps:</h5>
+          <pre class="pre">
+            <code>
+              {`type CustomValueEditorProps = {
+  fieldData: Fields | undefined;
+  operator: string | null;
+  value: string | null;
+  handleOnChange: (value: FieldsValue) => void;
+};`}
+            </code>
+          </pre>
+          <h5></h5>
+        </section>
+
+        <section class="Styling-section">
+          <h4>Styling:</h4>
+          <p>
+            The Query Builder component comes with default styles. You can override the default
+            styles by providing custom styles. The Query Builder component uses the following CSS
+            classes.
+          </p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>query-builder</td>
+                <td>Root class for the Query Builder component.</td>
+              </tr>
+              <tr>
+                <td>group</td>
+                <td>Class for the group container.</td>
+              </tr>
+              <tr>
+                <td>rule</td>
+                <td>Class for the rule container.</td>
+              </tr>
+              <tr>
+                <td>group-header</td>
+                <td>Class for the group header.</td>
+              </tr>
+              <tr>
+                <td>rule-header</td>
+                <td>Class for the rule header.</td>
+              </tr>
+              <tr>
+                <td>group-body</td>
+                <td>Class for the group body.</td>
+              </tr>
+              <tr>
+                <td>rule-body</td>
+                <td>Class for the rule body.</td>
+              </tr>
+              <tr>
+                <td>group-actions</td>
+                <td>Class for the group actions.</td>
+              </tr>
+              <tr>
+                <td>rule-actions</td>
+                <td>Class for the rule actions.</td>
+              </tr>
+              <tr>
+                <td>add-rule</td>
+                <td>Class for the add rule button.</td>
+              </tr>
+              <tr>
+                <td>add-group</td>
+                <td>Class for the add</td>
+              </tr>
+              <tr>
+                <td>delete-group</td>
+                <td>Class for the delete group button.</td>
+              </tr>
+              <tr>
+                <td>delete-rule</td>
+                <td>Class for the delete rule button.</td>
+              </tr>
+              <tr>
+                <td>clone-group</td>
+                <td>Class for the clone group button.</td>
+              </tr>
+              <tr>
+                <td>clone-rule</td>
+                <td>Class for the clone rule button.</td>
+              </tr>
+              <tr>
+                <td>shift-up</td>
+                <td>Class for the shift up button.</td>
+              </tr>
+              <tr>
+                <td>shift-down</td>
+                <td>Class for the shift down button.</td>
+              </tr>
+              <tr>
+                <td>lock-group</td>
+                <td>Class for the lock group button.</td>
+              </tr>
+              <tr>
+                <td>lock-rule</td>
+                <td>Class for the lock rule button.</td>
+              </tr>
+              <tr>
+                <td>not-rule-toggle</td>
+                <td>Class for the not rule toggle checkbox.</td>
+              </tr>
+              <tr>
+                <td>not-rule-group</td>
+                <td>Class for the not</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="Accessibility-section">
+          <h4>Accessibility:</h4>
+          <p>
+            The Query Builder component is built with accessibility in mind. The component supports
+            keyboard navigation and screen reader support. The component uses the following ARIA
+            attributes.
+          </p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>aria-label</td>
+                <td>Label for the button or element.</td>
+              </tr>
+              <tr>
+                <td>aria-description</td>
+                <td>Description for the button or element.</td>
+              </tr>
+              <tr>
+                <td>aria-busy</td>
+                <td>Indicates that the element is busy.</td>
+              </tr>
+              <tr>
+                <td>aria-disabled</td>
+                <td>Indicates that the element is disabled.</td>
+              </tr>
+            </tbody>
+          </table>
+          <section class="Control-elements-section">
+            <h5>Control Elements:</h5>
+            <p>
+              The Query Builder component provides control elements like customOperators and
+              customValueEditor components. These control elements can be customized by providing
+              custom components to the Query Builder component.
+            </p>
+            <p>
+              The Query Builder component provides the following control elements that can be
+              customized.
+            </p>
+            <ul class="list">
+              <li>
+                <strong>CustomOperators:</strong> Custom operators component to provide custom
+                operators. This component should return a JSX element. It takes the current
+                <a href="#Fields-section"> Field </a> data as an argument.
+              </li>
+              <li>
+                <strong>CustomValueEditor:</strong> Custom value editor component to provide custom
+                value editors. This component should return a JSX element. It takes
+                <a href="#CustomValueEditorProps-section"> CustomValueEditorProps</a> as an
+                argument.
+              </li>
+            </ul>
+          </section>
+        </section>
         <section>
+          <section class="DragNDrop-Section">
+            <h4>Drag and Drop:</h4>
+            <p>
+              The Query Builder component supports drag and drop to reorder groups and rules. The
+              component uses the <a href="https://solid-dnd.com/">solid-dnd</a> library for drag and
+              drop support.
+            </p>
+            <p>
+              The Query Builder component provides the following drag and drop classes that can be
+              used to customize the drag and drop feature.
+            </p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>draggable-container</td>
+                  <td>Class for the draggable container.</td>
+                </tr>
+                <tr>
+                  <td>rule-drop-top</td>
+                  <td>Class for the rule drop top container.</td>
+                </tr>
+                <tr>
+                  <td>rule-drop-bottom</td>
+                  <td>Class for the rule drop bottom container.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
           <h5>Todo/Future Updates:</h5>
           <ul class="list">
             <li>
