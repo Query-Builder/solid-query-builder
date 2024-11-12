@@ -207,8 +207,8 @@ export const Rule = (props: RuleProps) => {
               <option>----</option>
             </Show>
             <For each={ruleOperators()}>
-              {field => {
-                return <option>{field.value}</option>;
+              {operator => {
+                return <option>{operator.value}</option>;
               }}
             </For>
           </select>

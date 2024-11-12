@@ -25,7 +25,7 @@ export const MOCK_QUERY_DATA: Query = {
         {
           id: uuidv4(),
           field: 'Age',
-          fieldValue: 'ABC-3',
+          fieldValue: 33,
           operator: '=',
         },
         {
@@ -38,8 +38,20 @@ export const MOCK_QUERY_DATA: Query = {
     },
     {
       id: uuidv4(),
-      field: 'Subscription',
+      field: 'is Subscribed',
       fieldValue: 'ABC-4',
+      operator: '=',
+    },
+    {
+      id: uuidv4(),
+      field: 'Range value',
+      fieldValue: 'ABC-5',
+      operator: 'between',
+    },
+    {
+      id: uuidv4(),
+      field: 'Subscription Terms',
+      fieldValue: 'Subscription Terms and Conditions: Some long text',
       operator: '=',
     },
   ],

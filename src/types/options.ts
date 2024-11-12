@@ -1,4 +1,4 @@
-export interface Option<N extends string = string> {
+export interface Option<N extends string | number = string | number> {
   name?: N;
   value?: N;
   label: string;

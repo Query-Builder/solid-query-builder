@@ -74,6 +74,19 @@
   z-index: 999;
 }
 
+.value-editor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+  margin: 0;
+}
+
+.value-editor-text-area {
+  display: flex;
+  margin: 0;
+}
+
 /** branches */
 
 .query-builder.query-builder-branches .rule,

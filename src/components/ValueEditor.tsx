@@ -46,7 +46,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
             placeholder={placeHolderText}
             value={value}
             disabled={isDisabled()}
-            onChange={e => e.target.value}
+            onInput={e => e.target.value}
           />
         );
       }
@@ -62,7 +62,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
       );
     });
     return (
-      <span title={title}>
+      <span title={title} class="value-editor">
         {editors[0]}
         {separator}
         {editors[1]}
@@ -89,12 +89,13 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
     case 'textarea':
       return (
         <textarea
+        class="value-editor-text-area"
           name="input-textarea"
           placeholder={placeHolderText}
           value={value}
           title={title}
           disabled={isDisabled()}
-          onChange={e => handleOnChange(e.target.value)}
+          onInput={e => handleOnChange(e.target.value)}
         />
       );
 
@@ -122,7 +123,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
                 value={v.name}
                 disabled={isDisabled()}
                 checked={value === v.name}
-                onChange={e => handleOnChange(e.target.value)}
+                onInput={e => handleOnChange(e.target.value)}
               />
               {v.label}
             </label>
@@ -139,7 +140,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
       value={value}
       title={title}
       disabled={isDisabled()}
-      onChange={e => handleOnChange(e.target.value)}
+      onInput={e => handleOnChange(e.target.value)}
     />
   );
 };

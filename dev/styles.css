@@ -208,7 +208,7 @@ select {
 }
 
 .query-builder .rule {
-  height: 60px;
+  height: 100%;
   padding: 10px;
   margin: 0;
   column-gap: 10px;
@@ -227,6 +227,8 @@ select {
 
 .query-builder input[type='text'],
 .query-builder input[type='number'],
+.query-builder input[type='date'],
+.query-builder input[type='textarea'],
 .query-builder input[type='email'] {
   width: 200px;
   height: 100%;
