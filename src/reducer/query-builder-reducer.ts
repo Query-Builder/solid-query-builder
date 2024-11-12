@@ -334,6 +334,21 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       return draftState;
     }
+    case 'clone-rule': {
+      const targetPath = action.payload.path;
+      const targetIndex = targetPath.slice(-1)[0] ?? -1;
+      const parentGroupPath = targetPath.slice(0, -1);
+      const toBeClonedRule = findRuleByPath(draftState, targetPath);
+      const parentRuleGroup = findRuleGroupByPath(draftState, parentGroupPath);
+
+      if (parentRuleGroup && targetIndex >= 0 && toBeClonedRule) {
+        if (targetIndex >= 0 && targetIndex < parentRuleGroup.rules.length) {
+          parentRuleGroup.rules.splice(targetIndex + 1, 0, { ...toBeClonedRule });
+        }
+      }
+
+      return draftState;
+    }
     default: {
       return draftState;
     }

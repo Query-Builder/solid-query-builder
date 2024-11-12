@@ -1,11 +1,15 @@
-import { createContext, useContext, type JSX } from 'solid-js';
-import { DEFAULT_COMBINATOR } from 'src/constants';
+import { createContext, createEffect, createSignal, useContext, type JSX } from 'solid-js';
+import { unwrap } from 'solid-js/store';
 
 import { useReducer } from 'src/hooks';
+
 import { queryBuilderReducer } from 'src/reducer';
 
-import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
+import { DEFAULT_COMBINATOR } from 'src/constants';
+
 import { getDefaultRuleGroup, defaultProps } from 'src/utils';
+
+import type { Query, QueryBuilderActions, QueryBuilderConfig } from 'src/types';
 
 type WithRequired<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
@@ -79,10 +83,21 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
     props,
   );
 
+  // workaround to trigger update related to store...
+  const [triggerUpdate, setTriggerUpdating] = createSignal(1);
   const [store, dispatch] = useReducer<Query, QueryBuilderActions>(
     queryBuilderReducer,
     mergedProps.initialQuery,
+    () => {
+      setTriggerUpdating(prev => prev + 1);
+    },
   );
+
+  createEffect(() => {
+    // workaround to listen to triggerred update
+    triggerUpdate();
+    props.onQueryChangeHandler?.(unwrap(store));
+  });
 
   const getConfig = () => {
     return {

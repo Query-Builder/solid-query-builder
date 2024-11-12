@@ -131,6 +131,13 @@ type Move_Rule = {
   };
 };
 
+type Clone_Rule = {
+  type: 'clone-rule';
+  payload: {
+    path: Path;
+  };
+};
+
 type RuleGroupActions =
   | Add_Rule
   | Add_Rule_Group
@@ -145,6 +152,7 @@ type RuleActions =
   | Lock_Rule
   | Delete_Rule
   | Negate_Rule
+  | Clone_Rule
   | Move_Rule
   | Change_Field
   | Change_Operator
