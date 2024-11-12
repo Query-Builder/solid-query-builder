@@ -23,6 +23,7 @@ const App: Component = () => {
   const [packageVersion] = createResource(fetchPackageVersion);
 
   const [disableQB, setDisableQB] = createSignal(false);
+  const [showBranches, setShowBranches] = createSignal(true);
   const [showShiftActions, setShowShiftActions] = createSignal(true);
   const [allowDragAndDrop, setAllowDragAndDrop] = createSignal(true);
   const [addSingleRuleToGroup, setAddSingleRuleToGroup] = createSignal(true);
@@ -105,6 +106,15 @@ const App: Component = () => {
                 </label>
                 <label class="label">
                   <input
+                    name="toggle-branches"
+                    type="checkbox"
+                    checked={showBranches()}
+                    onChange={() => setShowBranches(!showBranches())}
+                  />
+                  Show Branches
+                </label>
+                <label class="label">
+                  <input
                     name="toggle-shift-actions"
                     type="checkbox"
                     checked={showShiftActions()}
@@ -156,6 +166,7 @@ const App: Component = () => {
               disabled={disableQB()}
               addSingleRuleToGroup={addSingleRuleToGroup()}
               showNotToggle={showNotToggle()}
+              showBranches={showBranches()}
             />
           </section>
         </section>
