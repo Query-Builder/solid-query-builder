@@ -2,7 +2,6 @@ import { Show, For, createEffect, createSignal, onCleanup, onMount } from 'solid
 import {
   createDraggable,
   createDroppable,
-  DragOverlay,
   transformStyle,
   useDragDropContext,
 } from '@thisbeyond/solid-dnd';
@@ -271,9 +270,6 @@ export const Rule = (props: RuleProps) => {
       >
         Delete
       </button>
-      <DragOverlay>
-        <div class="drag-overlay">{currentFieldData()?.name}</div>
-      </DragOverlay>
     </div>
   );
 };

@@ -82,10 +82,9 @@ html[data-theme='dark'] .github-logo {
 }
 
 .options {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  column-gap: 10px;
+  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
 }
 
 .options label {
@@ -238,7 +237,7 @@ select {
   align-items: center;
   column-gap: 10px;
   height: 40px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .query-builder select[name='operators'] {
@@ -247,9 +246,11 @@ select {
 
 .query-builder .shift-actions {
   height: 40px;
+  margin-top: -8px;
 }
 
 .query-builder .shift-actions button {
+  height: 25px;
   background-color: transparent;
   padding: 0;
 }
@@ -258,16 +259,12 @@ html[data-theme='light'] .shift-actions button {
   color: black;
 }
 
-html[data-theme='dark'] .query-builder .rule-group {
-  border-color: rgb(188 194 206);
+.query-builder .rule-group {
+  border-color: var(--pico-border-color);
 }
 
-html[data-theme='dark'] .query-builder .rule {
-  border-color: rgb(188 194 206 / 10%);
-}
-
-html[data-theme='light'] .query-builder .rule {
-  border-color: rgb(0 0 0 / 10%);
+.query-builder .rule {
+  border-color: var(--pico-muted-border-color);
 }
 
 .query-builder .rule-group {
@@ -283,3 +280,19 @@ html[data-theme='light'] .query-builder .rule {
 }
 
 /* Query Builder Styles ends here...   */
+
+.query-builder.query-builder-branches .rule::before {
+  border-color: var(--pico-primary);
+}
+
+.query-builder.query-builder-branches .rule::after {
+  border-color: var(--pico-primary);
+}
+
+.query-builder.query-builder-branches .rule-group::before {
+  border-color: var(--pico-primary);
+}
+
+.query-builder.query-builder-branches .rule-group::after {
+  border-color: var(--pico-primary);
+}

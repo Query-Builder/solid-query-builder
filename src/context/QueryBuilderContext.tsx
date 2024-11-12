@@ -21,6 +21,7 @@ type Config = WithRequired<
   | 'showShiftActions'
   | 'allowDragAndDrop'
   | 'addSingleRuleToGroup'
+  | 'showBranches'
 >;
 
 type QueryBuilderContext = {
@@ -45,6 +46,7 @@ type QueryBuilderProviderProps = Pick<
   | 'showShiftActions'
   | 'allowDragAndDrop'
   | 'addSingleRuleToGroup'
+  | 'showBranches'
 > & {
   children: JSX.Element;
 };
@@ -72,6 +74,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       showShiftActions: false,
       allowDragAndDrop: false,
       addSingleRuleToGroup: false,
+      showBranches: false,
     },
     props,
   );
@@ -93,6 +96,7 @@ export const QueryBuilderProvider = (props: QueryBuilderProviderProps) => {
       showShiftActions: mergedProps.showShiftActions,
       allowDragAndDrop: mergedProps.allowDragAndDrop,
       addSingleRuleToGroup: mergedProps.addSingleRuleToGroup,
+      showBranches: mergedProps.showBranches,
     };
   };
 
