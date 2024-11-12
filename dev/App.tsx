@@ -326,7 +326,16 @@ const App: Component = () => {
                 <td>
                   Initial query object to be displayed in the Query Builder. The query object should
                   follow the <a href="#JSON-Data">Query object structure</a>. This prop is optional
-                  unless you want to display some initial query.
+                  unless you want to display some initial query. If not provided, it would have some
+                  default query with empty rule.
+                </td>
+              </tr>
+              <tr>
+                <td>onQueryChangeHandler</td>
+                <td>function</td>
+                <td>
+                  Callback function to get the updated query object. This prop is required to get
+                  the updated query object.
                 </td>
               </tr>
               <tr>
@@ -386,6 +395,13 @@ const App: Component = () => {
                 <td>
                   Show the not toggle for rules and groups. This prop is optional. Default is{' '}
                   <code>both</code>.
+                </td>
+              </tr>
+              <tr>
+                <td>showBranches</td>
+                <td>boolean</td>
+                <td>
+                  Show branches for groups. This prop is optional. Default is <code>true</code>.
                 </td>
               </tr>
             </tbody>
