@@ -297,7 +297,7 @@ const App: Component = () => {
           <section id="JSON-Data">
             <details>
               <summary>
-                <h5>JSON Data:</h5>
+                <h5>Mock JSON Query Data:</h5>
               </summary>
               <pre class="pre">
                 <code>{JSON.stringify(MOCK_QUERY_DATA, null, 2)}</code>
