@@ -412,18 +412,69 @@ const App: Component = () => {
           <p>
             The Query Builder component is written in TypeScript and exports the following types.
           </p>
-          <h5 id="Query-section">Query:</h5>
+          <h5 id="Rule-section">RuleType:</h5>
           <pre class="pre">
             <code>
-              {`type Query = {
+              {`type RuleType = {
   id: string;
-  type: 'group' | 'rule';
-  rules?: Query[];
-  field?: string;
-  operator?: string;
-  value?: any;
+  field: string | null;
+  fieldValue: string | null;
+  operator: string | null;
+  locked?: boolean;
   not?: boolean;
 };`}
+            </code>
+          </pre>
+          <h5 id="RuleGroup-section">RuleGroupType:</h5>
+          <pre class="pre">
+            <code>
+              {`type RuleGroupType = {
+  id: string;
+  combinator: string;
+  locked?: boolean;
+  not?: boolean;
+  rules: (RuleType | RuleGroupType)[];
+};`}
+            </code>
+          </pre>
+          <h5 id="QueryBuilderConfig-section">QueryBuilderConfig:</h5>
+          <pre class="pre">
+            <code>
+              {`type QueryBuilderConfig = {
+  initialQuery?: Query;
+  onQueryChangeHandler?: (newQuery: Query) => void;
+  showNotToggle?: Not_Selection;
+  disabled?: boolean;
+  combinators?: Combinator[];
+  fields: Fields[];
+  operators?: OperatorsList | null;
+  getOperators?: (field: string, misc: { fieldsData: Fields }) => OperatorsList | null;
+  controlElements?: {
+    customOperators?: (field: Fields | undefined) => JSX.Element;
+    customValueEditor?: (props: CustomValueEditorProps) => JSX.Element;
+  };
+  showShiftActions?: boolean;
+  allowDragAndDrop?: boolean;
+  addSingleRuleToGroup?: boolean;
+  showBranches?: boolean;
+};`}
+            </code>
+          </pre>
+          <h5 id="InputType-section">InputType:</h5>
+          <pre class="pre">
+            <code>
+              {`type InputType = | 'text' | 'number' | 'date' | 'datetime-local' | 'time' | 'month' | 'week' | 'email' | 'tel' | 'url' | 'password' | 'search' | 'color' | null;`}
+            </code>
+          </pre>
+          <h5 id="Option-section">Option:</h5>
+          <pre class="pre">
+            <code>
+              {`interface Option<N extends string | number = string | number> {
+  name?: N;
+  value?: N;
+  label: string;
+  disabled?: boolean;
+}`}
             </code>
           </pre>
           <h5 id="Fields-section">Fields:</h5>
@@ -432,11 +483,13 @@ const App: Component = () => {
               {`type Fields = {
   name: string;
   label: string;
-  type?: string;
+  placeholder?: string | null;
+  id?: string;
+  dataType?: string;
   operators?: OperatorsList;
-  valueEditorType?: string;
-  inputType?: string;
-  values?: Option[];
+  valueEditorType?: ValueEditorType;
+  inputType?: InputType | null;;
+  values?:  Option<string | number>[];
   defaultOperator?: string;
   defaultValue?: any;
   validator?: RuleValidator;
@@ -457,15 +510,6 @@ const App: Component = () => {
   values?: Option[];
   defaultValue?: any;
   comparator?: string;
-};`}
-            </code>
-          </pre>
-          <h5 class="Option-section">Option:</h5>
-          <pre class="pre">
-            <code>
-              {`type Option = {
-  value: string;
-  label: string;
 };`}
             </code>
           </pre>
@@ -528,7 +572,7 @@ const App: Component = () => {
                 <td>Root class for the Query Builder component.</td>
               </tr>
               <tr>
-                <td>group</td>
+                <td>rule-group</td>
                 <td>Class for the group container.</td>
               </tr>
               <tr>
@@ -536,15 +580,11 @@ const App: Component = () => {
                 <td>Class for the rule container.</td>
               </tr>
               <tr>
-                <td>group-header</td>
+                <td>rule-group__header</td>
                 <td>Class for the group header.</td>
               </tr>
               <tr>
-                <td>rule-header</td>
-                <td>Class for the rule header.</td>
-              </tr>
-              <tr>
-                <td>group-body</td>
+                <td>rule-group__body</td>
                 <td>Class for the group body.</td>
               </tr>
               <tr>
@@ -584,28 +624,40 @@ const App: Component = () => {
                 <td>Class for the clone rule button.</td>
               </tr>
               <tr>
-                <td>shift-up</td>
-                <td>Class for the shift up button.</td>
+                <td>shift-actions</td>
+                <td>
+                  Class for the shift actions container. This class is used to style the shift up
+                  and shift down buttons.
+                </td>
               </tr>
               <tr>
-                <td>shift-down</td>
-                <td>Class for the shift down button.</td>
+                <td>rule.rule-drop-top</td>
+                <td>
+                  Class for the rule drop top container. This class is used to style the top drop
+                  container.
+                </td>
               </tr>
               <tr>
-                <td>lock-group</td>
-                <td>Class for the lock group button.</td>
+                <td>rule.rule-drop-bottom</td>
+                <td>
+                  Class for the rule drop bottom container. This class is used to style the bottom
+                  drop container.
+                </td>
               </tr>
               <tr>
-                <td>lock-rule</td>
-                <td>Class for the lock rule button.</td>
+                <td>dragHandle</td>
+                <td>Class for the drag handle.</td>
               </tr>
               <tr>
-                <td>not-rule-toggle</td>
-                <td>Class for the not rule toggle checkbox.</td>
+                <td>drag-overlay</td>
+                <td>Class for the drag overlay.</td>
               </tr>
               <tr>
-                <td>not-rule-group</td>
-                <td>Class for the not</td>
+                <td>query-builder.query-builder-branches</td>
+                <td>
+                  Class for the query builder branches. This class is used to style the branches
+                  between groups.
+                </td>
               </tr>
             </tbody>
           </table>
@@ -704,6 +756,82 @@ const App: Component = () => {
                 </tr>
               </tbody>
             </table>
+          </section>
+
+          <section class="ParsingQuery-Section">
+            <h5>Query Formatting</h5>
+            <p>
+              The Query Builder component provides a method to convert the query object to a string
+              expression. The method takes the query object and a format type as an argument and
+              returns a string expression.
+            </p>
+            <pre class="pre">
+              <code>
+                {`import { formatQuery } from '@query-builder/solid-query-builder';
+
+const query = {
+  id: uuidv4(),
+  combinator: 'OR',
+  locked: false,
+  not: false,
+  rules: [
+    {
+      id: f96404e9-5100-452c-8bf0-063a98c1b9a4,
+      field: 'First Name',
+      fieldValue: 'ABC-1',
+      operator: '=',
+      locked: flase,
+      not: false,
+    },
+    {
+      id: f96404e9-5100-452c-8bf0-063a98c1b9a5,
+      field: 'Last Name',
+      fieldValue: 'ABC-2',
+      operator: '=',
+      locked: false,
+      not: false,
+    },
+    {
+      id: f96404e9-5100-452c-8bf0-063a98c1b9a6,
+      combinator: 'OR',
+      locked: false,
+      not: false,
+      rules: [
+        {
+          id: f96404e9-5100-452c-8bf0-063a98c1b9a7,
+          field: 'Age',
+          fieldValue: 'ABC-3',
+          operator: '=',
+          locked: false,
+          not: false,
+        },
+        {
+          id: f96404e9-5100-452c-8bf0-063a98c1b9a8,
+          field: 'Email',
+          fieldValue: 'john@doe.com',
+          operator: '=',
+          locked: false,
+          not: false,
+
+        },
+      ],
+    },
+    {
+      id: f96404e9-5100-452c-8bf0-063a98c1b9a9,
+      field: 'Subscription',
+      fieldValue: 'ABC-4',
+      operator: '=',
+      locked: false,
+      not: false,
+    },
+  ],
+};
+
+const parsedQuery = formatQuery(query);
+Output - 'OR (First Name = ABC-1, Last Name = ABC-2, OR (Age = ABC-3, Email = john@doe.com), Subscription = ABC-4)'
+`}
+              </code>
+            </pre>
           </section>
           <h5>Todo/Future Updates:</h5>
           <ul class="list">
