@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.0.0-beta.0 - 2024-11-12
+
 ## 0.0.1-beta.1 - 2024-11-10
 - Initial beta release of Query Builder component in SolidJS.
 - This supports uncontrolled component behaviour.
