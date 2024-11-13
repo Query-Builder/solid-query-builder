@@ -412,6 +412,18 @@ const App: Component = () => {
           <p>
             The Query Builder component is written in TypeScript and exports the following types.
           </p>
+          <h5 id="Query-section">Query:</h5>
+          <pre class="pre">
+            <code>
+              {`type Query = {
+  id: string;
+  combinator: string;
+  locked?: boolean;
+  not?: boolean;
+  rules: (RuleType | RuleGroupType)[];
+};`}
+            </code>
+          </pre>
           <h5 id="Rule-section">RuleType:</h5>
           <pre class="pre">
             <code>
@@ -437,7 +449,7 @@ const App: Component = () => {
 };`}
             </code>
           </pre>
-          <h5 id="QueryBuilderConfig-section">QueryBuilderConfig:</h5>
+          <h5 id="QueryBuilderConfig-section">QueryBuilderConfig: (Component Props)</h5>
           <pre class="pre">
             <code>
               {`type QueryBuilderConfig = {

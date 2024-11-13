@@ -231,7 +231,12 @@ select {
 .query-builder input[type='textarea'],
 .query-builder input[type='email'] {
   width: 200px;
-  height: 100%;
+  height: 40px;
+}
+
+.query-builder .value-editor-text-area {
+  height: 60px;
+  width: 600px;
 }
 
 .query-builder .rule-group__header {
