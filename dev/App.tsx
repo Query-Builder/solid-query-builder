@@ -269,6 +269,15 @@ const App: Component = () => {
                   </button>
                 </pre>
               </div>
+              <h6 class="Note" style={'margin-top: 10px'}>
+                Note: For this demo, we are using PicoCSS. If you use the default CSS, the component
+                will look like the image below.
+              </h6>
+              <img
+                class="qb-image"
+                style={'margin-top: 10px'}
+                src="./public/QueryBuilderWithDefaultStyles.png"
+              ></img>
             </details>
           </section>
           <hr />
