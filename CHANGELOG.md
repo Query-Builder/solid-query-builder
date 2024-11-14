@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.0.1 - 2024-11-14
 ### Fixed
-
 - Combinator Value not reflecting the value passed as part of Query Prop.
 - Between and notBetween operator field value was mot getting reflected in query.
 - Operator was using labels instead of values in reducer which was diff from the value editor defaults.
