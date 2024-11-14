@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Combinator Value not reflecting the value passed as part of Query Prop.
+
 ## 1.0.0 - 2024-11-13
 ### Added
 - Initial major release for Query Builder.
