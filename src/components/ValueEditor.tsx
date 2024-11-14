@@ -37,16 +37,21 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
     (operator === 'between' || operator === 'notBetween') &&
     (valueEditorType === 'select' || valueEditorType === 'text')
   ) {
-    const editors = ['from', 'to'].map(() => {
+    const editors = ['from', 'to'].map((_, index) => {
       if (valueEditorType === 'text') {
         return (
           <input
             name="input-text"
             type={inputTypeCoerced}
             placeholder={placeHolderText}
-            value={value}
+            value={value?.split(separator)[index] ?? ''}
             disabled={isDisabled()}
-            onInput={e => e.target.value}
+            onInput={e => {
+              if (index === 0) {
+                handleOnChange(`${e.target.value}${separator}${value.split(separator)[1]}`);
+              }
+              handleOnChange(`${value.split(separator)[0]}${separator}${e.target.value}`);
+            }}
           />
         );
       }
@@ -89,7 +94,7 @@ export const ValueEditor = (allProps: FieldsEditorProps) => {
     case 'textarea':
       return (
         <textarea
-        class="value-editor-text-area"
+          class="value-editor-text-area"
           name="input-textarea"
           placeholder={placeHolderText}
           value={value}
