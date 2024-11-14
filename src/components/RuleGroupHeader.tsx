@@ -31,6 +31,7 @@ export const RuleGroupHeader = (props: RuleGroupHeaderProps) => {
       <select
         name="combinator"
         class="combinator"
+        value={props.query.combinator}
         disabled={config().disabled || props.parentLocked || props.query.locked}
         aria-label="Select combinator..."
         onChange={e =>
