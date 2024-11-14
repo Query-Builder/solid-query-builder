@@ -211,7 +211,7 @@ export const queryBuilderReducer = (draftState: Query, action: QueryBuilderActio
 
       if (targetRule) {
         targetRule.operator =
-          action.payload.operator !== null ? action.payload.operator.label : null;
+          action.payload.operator !== null ? action.payload.operator.value : null;
       }
 
       return draftState;
